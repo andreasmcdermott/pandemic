@@ -11,10 +11,7 @@
   let panic;
   let militaryBase;
   let researchStation;
-  let infectionBlack;
-  let infectionBlue;
-  let infectionRed;
-  let infectionYellow;
+  let infections = {};
   let quarantine;
   let faded;
 
@@ -27,10 +24,7 @@
     panic = city.panic || "0";
     militaryBase = city.militaryBase || false;
     researchStation = city.researchStation || false;
-    infectionBlack = city.infectionBlack || 0;
-    infectionBlue = city.infectionBlue || 0;
-    infectionRed = city.infectionRed || 0;
-    infectionYellow = city.infectionYellow || 0;
+    infections = city.infections || { red: 0, blue: 0, black: 0, yellow: 0 };
     quarantine = city.quarantine || false;
     faded = city.faded || false;
   }
@@ -41,10 +35,7 @@
       panic,
       militaryBase,
       researchStation,
-      infectionBlack,
-      infectionBlue,
-      infectionRed,
-      infectionYellow,
+      infections,
       quarantine,
       faded
     };
@@ -98,13 +89,13 @@
   <fieldset>
     <legend>Infections</legend>
     <label>Black</label>
-    <input type="number" bind:value={infectionBlack} />
+    <input type="number" bind:value={infections.black} />
     <label>Red</label>
-    <input type="number" bind:value={infectionRed} />
+    <input type="number" bind:value={infections.red} />
     <label>Blue</label>
-    <input type="number" bind:value={infectionBlue} />
+    <input type="number" bind:value={infections.blue} />
     <label>Yellow</label>
-    <input type="number" bind:value={infectionYellow} />
+    <input type="number" bind:value={infections.yellow} />
   </fieldset>
 
   <label>
