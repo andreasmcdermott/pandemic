@@ -4,10 +4,9 @@
   import board, { toggleOverlay } from "./board-store";
   import NewCityForm from "./NewCityForm.svelte";
   import UpdateCityForm from "./UpdateCityForm.svelte";
+  import UpdateInfectionForm from "./UpdateInfectionForm.svelte";
 
   const dispatch = createEventDispatcher();
-
-  let enabled = true;
 
   function selectCity(id) {
     dispatch("selectCity", id);
@@ -26,17 +25,12 @@
     overflow-y: auto;
     max-height: 100%;
   }
-  .admin-mode,
   .overlay {
     margin-bottom: 5px;
   }
 </style>
 
 <div class="admin-container">
-  <label class="admin-mode">
-    <input type="checkbox" bind:checked={enabled} />
-    Admin mode
-  </label>
   <label class="overlay">
     <input
       type="checkbox"
@@ -45,10 +39,9 @@
     Show overlay
   </label>
 
-  {#if enabled}
-    <UpdateCityForm on:selectCity={e => selectCity(e.detail)} />
+  <UpdateCityForm on:selectCity={e => selectCity(e.detail)} />
+  <UpdateInfectionForm />
 
-    <!-- <NewCityForm on:createdCity={e => selectCity(e.detail)} /> -->
-  {/if}
+  <!-- <NewCityForm on:createdCity={e => selectCity(e.detail)} /> -->
 
 </div>

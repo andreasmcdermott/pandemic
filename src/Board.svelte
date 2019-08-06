@@ -1,8 +1,11 @@
 <script>
-  import Admin from "./Admin.svelte";
   import game from "./game-store";
+  import user from "./user-store";
   import cities from "./city-store";
   import board from "./board-store";
+  import Admin from "./Admin.svelte";
+
+  export let adminMode = false;
 
   let selectedCity = null;
   let cityStates = null;
@@ -10,6 +13,9 @@
     acc[city.id] = city;
     return acc;
   }, {});
+  $: {
+    console.log($game);
+  }
 
   function updateBoardClick(e) {
     const { clientX, clientY } = e;
@@ -75,6 +81,32 @@
     border: 2px solid black;
     background: white;
   }
+  .infection {
+    position: absolute;
+    bottom: 50px;
+    font-size: 12px;
+    padding: 2px;
+  }
+  .infection.red {
+    left: 95px;
+    background: red;
+    color: white;
+  }
+  .infection.blue {
+    left: 180px;
+    background: blue;
+    color: white;
+  }
+  .infection.black {
+    left: 260px;
+    background: black;
+    color: white;
+  }
+  .infection.yellow {
+    left: 20px;
+    background: yellow;
+    color: black;
+  }
 </style>
 
 <div class="board-container">
@@ -106,8 +138,21 @@
     {/each}
   {/if}
 
-  <Admin
-    on:selectCity={e => {
-      selectedCity = e.detail;
-    }} />
+  <div class="infection yellow">N/A</div>
+  <div class="infection red">
+    {#if $game.cured.red}Cured{:else}Not cured{/if}
+  </div>
+  <div class="infection blue">
+    {#if $game.cured.blue}Cured{:else}Not cured{/if}
+  </div>
+  <div class="infection black">
+    {#if $game.cured.black}Cured{:else}Not cured{/if}
+  </div>
+
+  {#if $user.admin && adminMode}
+    <Admin
+      on:selectCity={e => {
+        selectedCity = e.detail;
+      }} />
+  {/if}
 </div>

@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 import firebase from './fb';
 
-const game = writable({ cities: [] });
+const game = writable({ cities: [], cured: {} });
 
 const gameCollection = firebase
   .firestore()

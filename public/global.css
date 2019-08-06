@@ -34,7 +34,9 @@ label {
 
 button,
 select,
-[type='text'] {
+[type='text'],
+[type='email'],
+[type='password'] {
   display: block;
   width: 100%;
 }
