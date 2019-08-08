@@ -119,4 +119,10 @@
   </label>
 
   <button on:click={updateSelectedCity}>Save</button>
+  <button
+    on:click={() => {
+      selectedCity = '';
+    }}>
+    Done
+  </button>
 {/if}

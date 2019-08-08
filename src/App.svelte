@@ -5,6 +5,7 @@
   let email = window.localStorage.getItem("email") || "";
   let password = "";
 
+  let expandAccount = false;
   let adminMode = true;
 </script>
 
@@ -33,20 +34,30 @@
 
   .account {
     position: absolute;
-    top: 0;
-    left: calc(100% - 20px);
     background: white;
     padding: 5px;
     font-size: 12px;
     min-width: 100px;
+    top: 0;
+    left: 100%;
   }
 
-  .account:hover {
+  .account.expanded {
     right: 0;
     left: auto;
   }
 
-  .account > button {
+  .toggleAccount {
+    position: absolute;
+    left: -20px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    padding: 0;
+    text-align: center;
+  }
+
+  .sign-out {
     font-size: 10px;
   }
   .loading {
@@ -62,13 +73,20 @@
 <div class="root">
   {#if $user && $user.uid}
     <Board {adminMode} />
-    <div class="account">
+    <div class="account" class:expanded={expandAccount}>
+      <button
+        class="toggleAccount"
+        on:click={() => {
+          expandAccount = !expandAccount;
+        }}>
+        {expandAccount ? '>' : '<'}
+      </button>
       {$user.name}
       <label class="admin-mode">
         <input type="checkbox" bind:checked={adminMode} />
         Admin mode
       </label>
-      <button on:click={signout}>Sign out</button>
+      <button class="sign-out" on:click={signout}>Sign out</button>
     </div>
   {:else if $user === null}
     <div class="form-container">

@@ -17,6 +17,10 @@
     console.log($game);
   }
 
+  $: outbreakPosX = 40 + ($game.outbreaks % 2) * 40;
+  $: outbreakPosY = 340 + $game.outbreaks * 28;
+  $: infectionPosX = 1008 + $game.infection_rate * 46.5;
+
   function updateBoardClick(e) {
     const { clientX, clientY } = e;
     const { scrollX, scrollY } = window;
@@ -84,8 +88,12 @@
   .infection {
     position: absolute;
     bottom: 50px;
-    font-size: 12px;
+    max-width: 60px;
+    overflow: hidden;
+    font-size: 11px;
     padding: 2px;
+    margin: 0;
+    list-style-type: none;
   }
   .infection.red {
     left: 95px;
@@ -107,6 +115,23 @@
     background: yellow;
     color: black;
   }
+  .infectionRate {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    border-radius: 50%;
+    background: darkgreen;
+    border: 2px solid white;
+    top: 158px;
+  }
+  .outbreak {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    border-radius: 50px;
+    background: purple;
+    border: 2px solid white;
+  }
 </style>
 
 <div class="board-container">
@@ -117,7 +142,7 @@
     style={`width: ${$game.board_width}px; height: ${$game.board_height}px;`}
     on:click={updateBoardClick} />
 
-  {#if $board.showOverlay && cityStates}
+  {#if cityStates}
     {#each $cities as city}
       <div
         title={city.name}
@@ -138,16 +163,36 @@
     {/each}
   {/if}
 
+  <div
+    class="outbreak"
+    style="left: {outbreakPosX}px; top: {outbreakPosY}px;" />
+  <div class="infectionRate" style="left: {infectionPosX}px;" />
+
   <div class="infection yellow">N/A</div>
-  <div class="infection red">
-    {#if $game.cured.red}Cured{:else}Not cured{/if}
-  </div>
-  <div class="infection blue">
-    {#if $game.cured.blue}Cured{:else}Not cured{/if}
-  </div>
-  <div class="infection black">
-    {#if $game.cured.black}Cured{:else}Not cured{/if}
-  </div>
+  <ul class="infection red">
+    <li>
+      {#if $game.cured.red}Cured{:else}Not cured{/if}
+    </li>
+    <li>
+      {#if $game.eradicated.red}Eradicated{:else}Not eradicated{/if}
+    </li>
+  </ul>
+  <ul class="infection blue">
+    <li>
+      {#if $game.cured.blue}Cured{:else}Not cured{/if}
+    </li>
+    <li>
+      {#if $game.eradicated.blue}Eradicated{:else}Not eradicated{/if}
+    </li>
+  </ul>
+  <ul class="infection black">
+    <li>
+      {#if $game.cured.black}Cured{:else}Not cured{/if}
+    </li>
+    <li>
+      {#if $game.eradicated.black}Eradicated{:else}Not eradicated{/if}
+    </li>
+  </ul>
 
   {#if $user.admin && adminMode}
     <Admin
