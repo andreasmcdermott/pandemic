@@ -1,7 +1,9 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import game, { createCity, updateCity } from "../stores/game";
-  import cities from "../stores/city";
+  import cities, { updateCity } from "../stores/cities";
+
+  import Container from "./Container.svelte";
+  import CitySelector from "./CitySelector.svelte";
 
   const dispatch = createEventDispatcher();
 
@@ -15,12 +17,12 @@
   let quarantine;
   let faded;
 
-  function selectCity(id) {
-    selectedCity = id;
+  function selectCity(cityId) {
+    selectedCity = cityId;
     dispatch("selectCity", selectedCity);
     if (!selectedCity) return;
 
-    city = $game.cities.find(city => city.id === selectedCity) || {};
+    city = $cities.find(city => city.id === selectedCity) || {};
     panic = city.panic || "0";
     militaryBase = city.militaryBase || false;
     researchStation = city.researchStation || false;
@@ -40,89 +42,80 @@
       faded
     };
 
-    if (city.id) {
-      updateCity(city.id, values);
-    } else {
-      createCity(selectedCity, values);
-    }
+    updateCity(city.id, values);
 
     selectCity("");
   }
 </script>
 
-<select bind:value={selectedCity} on:change={e => selectCity(e.target.value)}>
-  <option value="">Select city</option>
-  {#each $cities as city}
-    <option value={city.id}>{city.name}</option>
-  {/each}
-</select>
+<Container label="City">
+  <CitySelector selected={selectedCity} on:change={e => selectCity(e.detail)} />
 
-{#if selectedCity && city}
-  <fieldset>
-    <legend>Panic Level</legend>
+  {#if selectedCity && city}
+    <Container label="Panic Level">
+      <label>
+        <input type="radio" value="0" bind:group={panic} />
+        None
+      </label>
+      <label>
+        <input type="radio" value="1" bind:group={panic} />
+        Unstable (1)
+      </label>
+      <label>
+        <input type="radio" value="2" bind:group={panic} />
+        Rioting (2)
+      </label>
+      <label>
+        <input type="radio" value="3" bind:group={panic} />
+        Rioting (3)
+      </label>
+      <label>
+        <input type="radio" value="4" bind:group={panic} />
+        Collapsing (4)
+      </label>
+      <label>
+        <input type="radio" value="5" bind:group={panic} />
+        Fallen (5)
+      </label>
+    </Container>
+
+    <Container label="Infections">
+      <label>Black</label>
+      <input type="number" bind:value={infections.black} />
+      <label>Red</label>
+      <input type="number" bind:value={infections.red} />
+      <label>Blue</label>
+      <input type="number" bind:value={infections.blue} />
+      <label>Yellow</label>
+      <input type="number" bind:value={infections.yellow} />
+    </Container>
+
     <label>
-      <input type="radio" value="0" bind:group={panic} />
-      None
+      <input type="checkbox" bind:checked={militaryBase} />
+      Military Base
     </label>
+
     <label>
-      <input type="radio" value="1" bind:group={panic} />
-      Unstable (1)
+      <input type="checkbox" bind:checked={researchStation} />
+      Research Station Base
     </label>
+
     <label>
-      <input type="radio" value="2" bind:group={panic} />
-      Rioting (2)
+      <input type="checkbox" bind:checked={quarantine} />
+      Quarantine
     </label>
+
     <label>
-      <input type="radio" value="3" bind:group={panic} />
-      Rioting (3)
+      <input type="checkbox" bind:checked={faded} />
+      Faded
     </label>
-    <label>
-      <input type="radio" value="4" bind:group={panic} />
-      Collapsing (4)
-    </label>
-    <label>
-      <input type="radio" value="5" bind:group={panic} />
-      Fallen (5)
-    </label>
-  </fieldset>
 
-  <fieldset>
-    <legend>Infections</legend>
-    <label>Black</label>
-    <input type="number" bind:value={infections.black} />
-    <label>Red</label>
-    <input type="number" bind:value={infections.red} />
-    <label>Blue</label>
-    <input type="number" bind:value={infections.blue} />
-    <label>Yellow</label>
-    <input type="number" bind:value={infections.yellow} />
-  </fieldset>
-
-  <label>
-    <input type="checkbox" bind:checked={militaryBase} />
-    Military Base
-  </label>
-
-  <label>
-    <input type="checkbox" bind:checked={researchStation} />
-    Research Station Base
-  </label>
-
-  <label>
-    <input type="checkbox" bind:checked={quarantine} />
-    Quarantine
-  </label>
-
-  <label>
-    <input type="checkbox" bind:checked={faded} />
-    Faded
-  </label>
-
-  <button on:click={updateSelectedCity}>Save</button>
-  <button
-    on:click={() => {
-      selectedCity = '';
-    }}>
-    Done
-  </button>
-{/if}
+    <button on:click={updateSelectedCity}>Save</button>
+    <button
+      on:click={() => {
+        selectedCity = '';
+      }}>
+      Done
+    </button>
+  {/if}
+</Container>

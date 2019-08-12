@@ -1,77 +1,43 @@
-import { writable } from 'svelte/store';
-import firebase from '../data//fb';
+import { get, derived } from 'svelte/store';
+import gameData from '../data/game';
 
-const game = writable({ cities: [], cured: {}, eradicated: {}, players: {} });
-
-const gameCollection = firebase
-  .firestore()
-  .collection('games')
-  .where('active', '==', true)
-  .limit(1);
-
-let gameId;
-let gameDoc;
-let cityCollection;
-let playerCollection;
-
-gameCollection.onSnapshot(snap => {
-  gameDoc = snap.docs[0];
-  gameId = gameDoc.id;
-  playerCollection = gameDoc.ref.collection('/players');
-  playerCollection.onSnapshot(playersSnap => {
-    game.update(g => ({
-      ...g,
-      ...gameDoc.data(),
-      players: playersSnap.docs.reduce((acc, playerDoc) => {
-        acc[playerDoc.id] = { id: playerDoc.id, ...playerDoc.data() };
-        return acc;
-      }, {})
-    }));
-  });
-  cityCollection = gameDoc.ref.collection('/cities');
-  cityCollection.onSnapshot(citiesSnap => {
-    game.update(g => ({
-      ...g,
-      ...gameDoc.data(),
-      cities: citiesSnap.docs.map(cityDoc => ({ id: cityDoc.id, ...cityDoc.data() }))
-    }));
-  });
+const game = derived(gameData, ($game, set) => {
+  if ($game) {
+    set({
+      id: $game.id,
+      ...$game.data()
+    });
+  } else {
+    set(null);
+  }
 });
 
 export default game;
 
-export function updateCity(id, values) {
-  cityCollection.doc(id).update(values);
-}
-
-export function createCity(id, values) {
-  cityCollection.doc(id).set(values);
-}
-
 export function toggleCured(infection) {
-  const cured = gameDoc.data().cured;
+  const $game = get(gameData);
+  if (!$game) return;
+  const cured = $game.data().cured;
   cured[infection] = !cured[infection];
-  gameDoc.ref.update({ cured });
+  $game.ref.update({ cured });
 }
 
 export function toggleEradicated(infection) {
-  const eradicated = gameDoc.data().eradicated;
+  const $game = get(gameData);
+  if (!$game) return;
+  const eradicated = $game.data().eradicated;
   eradicated[infection] = !eradicated[infection];
-  gameDoc.ref.update({ eradicated });
+  $game.ref.update({ eradicated });
 }
 
 export function updateInfectionRate(val) {
-  gameDoc.ref.update({ infection_rate: val });
+  const $game = get(gameData);
+  if (!$game) return;
+  $game.ref.update({ infection_rate: val });
 }
 
 export function updateOutbreaks(val) {
-  gameDoc.ref.update({ outbreaks: val });
-}
-
-export function updatePlayerCharacter(playerId, characterId) {
-  playerCollection.doc(playerId).update({ character: characterId });
-}
-
-export function updatePlayerCity(playerId, cityId) {
-  playerCollection.doc(playerId).update({ city: cityId });
+  const $game = get(gameData);
+  if (!$game) return;
+  $game.ref.update({ outbreaks: val });
 }

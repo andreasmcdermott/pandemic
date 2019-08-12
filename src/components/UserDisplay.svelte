@@ -7,6 +7,7 @@
   .user-info {
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
   }
 
   .user-color {

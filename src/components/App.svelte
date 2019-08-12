@@ -1,4 +1,5 @@
 <script>
+  import game from "../stores/game";
   import user from "../stores/user";
 
   import Board from "./Board.svelte";
@@ -7,7 +8,9 @@
   import Loading from "./Loading.svelte";
   import Login from "./Login.svelte";
 
-  $: adminMode = $user && $user.admin;
+  $: loading = !$game;
+  $: signedIn = !!($user && $user.id);
+  $: adminMode = !!($user && $user.admin);
 
   let selectedCity = "";
 </script>
@@ -20,7 +23,9 @@
 </style>
 
 <div class="root">
-  {#if $user && $user.uid}
+  {#if loading}
+    <Loading />
+  {:else if signedIn}
     <Board {selectedCity} />
     <AccountPanel />
 
@@ -30,9 +35,7 @@
           selectedCity = e.detail;
         }} />
     {/if}
-  {:else if $user === null}
-    <Login />
   {:else}
-    <Loading />
+    <Login />
   {/if}
 </div>
