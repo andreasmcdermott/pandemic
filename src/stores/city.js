@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import firebase from './fb';
+import firebase from '../data//fb';
 
 const cityCollection = firebase.firestore().collection('cities');
 

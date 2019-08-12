@@ -1,5 +1,5 @@
 <script>
-  import game, { toggleCured, toggleEradicated } from "./game-store";
+  import game, { toggleCured, toggleEradicated } from "../stores/game";
   let selectedInfection = "";
 </script>
 

@@ -1,5 +1,5 @@
 import { readable } from 'svelte/store';
-import firebase from './fb';
+import firebase from '../data//fb';
 
 const user = readable(undefined, set => {
   firebase.auth().onAuthStateChanged(user => {

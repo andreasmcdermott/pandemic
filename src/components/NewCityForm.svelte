@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher } from "svelte";
-  import board from "./board-store";
-  import { createCity } from "./city-store";
+  import board from "../stores/board";
+  import { createCity } from "../stores/city";
 
   const dispatch = createEventDispatcher();
 

@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
-import firebase from './fb';
+import firebase from '../data//fb';
 
-const game = writable({ cities: [], cured: {}, eradicated: {} });
+const game = writable({ cities: [], cured: {}, eradicated: {}, players: {} });
 
 const gameCollection = firebase
   .firestore()
@@ -12,16 +12,29 @@ const gameCollection = firebase
 let gameId;
 let gameDoc;
 let cityCollection;
+let playerCollection;
 
 gameCollection.onSnapshot(snap => {
   gameDoc = snap.docs[0];
   gameId = gameDoc.id;
+  playerCollection = gameDoc.ref.collection('/players');
+  playerCollection.onSnapshot(playersSnap => {
+    game.update(g => ({
+      ...g,
+      ...gameDoc.data(),
+      players: playersSnap.docs.reduce((acc, playerDoc) => {
+        acc[playerDoc.id] = { id: playerDoc.id, ...playerDoc.data() };
+        return acc;
+      }, {})
+    }));
+  });
   cityCollection = gameDoc.ref.collection('/cities');
   cityCollection.onSnapshot(citiesSnap => {
-    game.set({
+    game.update(g => ({
+      ...g,
       ...gameDoc.data(),
       cities: citiesSnap.docs.map(cityDoc => ({ id: cityDoc.id, ...cityDoc.data() }))
-    });
+    }));
   });
 });
 
@@ -53,4 +66,12 @@ export function updateInfectionRate(val) {
 
 export function updateOutbreaks(val) {
   gameDoc.ref.update({ outbreaks: val });
+}
+
+export function updatePlayerCharacter(playerId, characterId) {
+  playerCollection.doc(playerId).update({ character: characterId });
+}
+
+export function updatePlayerCity(playerId, cityId) {
+  playerCollection.doc(playerId).update({ city: cityId });
 }

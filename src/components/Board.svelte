@@ -1,21 +1,16 @@
 <script>
-  import game from "./game-store";
-  import user from "./user-store";
-  import cities from "./city-store";
-  import board from "./board-store";
-  import Admin from "./Admin.svelte";
+  import game from "../stores/game";
+  import user from "../stores/user";
+  import cities from "../stores/city";
+  import board from "../stores/board";
 
-  export let adminMode = false;
+  export let selectedCity;
 
-  let selectedCity = null;
   let cityStates = null;
   $: cityStates = $game.cities.reduce((acc, city) => {
     acc[city.id] = city;
     return acc;
   }, {});
-  $: {
-    console.log($game);
-  }
 
   $: outbreakPosX = 40 + ($game.outbreaks % 2) * 40;
   $: outbreakPosY = 340 + $game.outbreaks * 28;
@@ -85,6 +80,45 @@
     border: 2px solid black;
     background: white;
   }
+  .city-infections {
+    position: absolute;
+    left: -18px;
+    top: -20px;
+  }
+  .city-infections > * {
+    border: 1px solid white;
+    color: white;
+    display: block;
+    padding: 0 2px;
+  }
+  .city-infections > .red {
+    background-color: red;
+  }
+  .city-infections > .yellow {
+    background-color: yellow;
+    color: black;
+  }
+  .city-infections > .black {
+    background-color: black;
+  }
+  .city-infections > .blue {
+    background-color: blue;
+  }
+  .city-infections > .faded {
+    background-color: lime !important;
+  }
+  .player {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid white;
+    position: absolute;
+    top: 5px;
+  }
+  .city.yellow .player,
+  .city.faded .player {
+    border-color: black !important;
+  }
   .infection {
     position: absolute;
     bottom: 50px;
@@ -146,10 +180,20 @@
     {#each $cities as city}
       <div
         title={city.name}
-        class="city"
+        class="city {city.color}"
+        class:faded={cityStates[city.id] && cityStates[city.id].faded}
         class:selected={selectedCity === city.id}
         style={`left: ${city.x}px; top: ${city.y}px; width: ${$game.city_size}px; height: ${$game.city_size}px; background: ${cityStates[city.id] && cityStates[city.id].faded ? 'lime' : city.color};`}>
         <div class="name">{city.name}</div>
+        {#if cityStates[city.id]}
+          <div class="city-infections">
+            {#each Object.entries(cityStates[city.id].infections).filter(([, count]) => count > 0) as [infection, count]}
+              <span class={infection} class:faded={infection === 'yellow'}>
+                {count}
+              </span>
+            {/each}
+          </div>
+        {/if}
         <div class="panic">
           {(cityStates[city.id] && cityStates[city.id].panic) || ''}
         </div>
@@ -159,6 +203,11 @@
         {#if cityStates[city.id] && cityStates[city.id].researchStation}
           <div class="researchStation" />
         {/if}
+        {#each Object.values($game.players).filter(player => player.city === city.id) as player, i}
+          <div
+            class="player"
+            style="background: {player.color}; left: {1 + i * 4}px" />
+        {/each}
       </div>
     {/each}
   {/if}
@@ -193,11 +242,4 @@
       {#if $game.eradicated.black}Eradicated{:else}Not eradicated{/if}
     </li>
   </ul>
-
-  {#if $user.admin && adminMode}
-    <Admin
-      on:selectCity={e => {
-        selectedCity = e.detail;
-      }} />
-  {/if}
 </div>
