@@ -2,9 +2,8 @@ import { derived } from 'svelte/store';
 import firebase from './fb';
 import game from './game';
 
-let unsubscribe = null;
 const players = derived(game, ($game, set) => {
-  if (unsubscribe) unsubscribe();
+  let unsubscribe = null;
   if ($game) {
     unsubscribe = $game.ref.collection('players').onSnapshot(snapshot => {
       set(snapshot);
@@ -12,6 +11,8 @@ const players = derived(game, ($game, set) => {
   } else {
     set(null);
   }
+
+  return () => unsubscribe && unsubscribe();
 });
 
 export default players;

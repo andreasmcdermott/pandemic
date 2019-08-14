@@ -1,3 +1,7 @@
+<script>
+  export let type = "button";
+</script>
+
 <style>
   .button {
     border: none;
@@ -13,6 +17,6 @@
   }
 </style>
 
-<button class="button" on:click>
+<button class="button" on:click {type}>
   <slot />
 </button>

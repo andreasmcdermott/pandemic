@@ -4,8 +4,9 @@ import game from './game';
 import auth from './auth';
 
 const player = derived([game, auth], ([$game, $auth], set) => {
+  let unsubscribe = null;
   if ($game && $auth) {
-    $game.ref
+    unsubscribe = $game.ref
       .collection('players')
       .doc($auth.uid)
       .onSnapshot(snapshot => {
@@ -14,6 +15,8 @@ const player = derived([game, auth], ([$game, $auth], set) => {
   } else {
     set(null);
   }
+
+  return () => unsubscribe && unsubscribe();
 });
 
 export default player;

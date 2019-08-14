@@ -8,8 +8,9 @@
   import Loading from "./Loading.svelte";
   import Login from "./Login.svelte";
 
-  $: loading = !$game;
-  $: signedIn = !!($user && $user.id);
+  $: loading = !$user;
+  $: signedOut = $user && !$user.id;
+  $: signedIn = $user && $user.id;
   $: adminMode = !!($user && $user.admin);
 
   let selectedCity = "";
@@ -23,19 +24,23 @@
 </style>
 
 <div class="root">
-  {#if loading}
-    <Loading />
+  {#if signedOut}
+    <Login />
   {:else if signedIn}
-    <Board {selectedCity} />
-    <AccountPanel />
+    {#if $game}
+      <Board {selectedCity} />
+      <AccountPanel />
 
-    {#if adminMode}
-      <AdminPanel
-        on:selectCity={e => {
-          selectedCity = e.detail;
-        }} />
+      {#if adminMode}
+        <AdminPanel
+          on:selectCity={e => {
+            selectedCity = e.detail;
+          }} />
+      {/if}
+    {:else}
+      <Loading />
     {/if}
   {:else}
-    <Login />
+    <Loading />
   {/if}
 </div>

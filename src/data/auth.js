@@ -2,8 +2,12 @@ import { readable } from 'svelte/store';
 import firebase from './fb';
 
 const auth = readable(null, set => {
-  firebase.auth().onAuthStateChanged(user => {
-    set(user);
+  return firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+      set(user);
+    } else {
+      set({ uid: null });
+    }
   });
 });
 

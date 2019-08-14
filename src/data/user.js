@@ -2,13 +2,10 @@ import { derived } from 'svelte/store';
 import firebase from './fb';
 import auth from './auth';
 
-let unsubscribe = null;
-
 const user = derived(auth, ($auth, set) => {
-  if (unsubscribe) unsubscribe();
-  if (!$auth) {
-    set(null);
-  } else {
+  let unsubscribe;
+
+  if ($auth && $auth.uid) {
     unsubscribe = firebase
       .firestore()
       .collection('users')
@@ -16,7 +13,13 @@ const user = derived(auth, ($auth, set) => {
       .onSnapshot(snapshot => {
         set(snapshot);
       });
+  } else if ($auth) {
+    set({ id: null });
+  } else {
+    set(null);
   }
+
+  return () => unsubscribe && unsubscribe();
 });
 
 export default user;

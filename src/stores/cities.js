@@ -2,11 +2,10 @@ import { get, derived } from 'svelte/store';
 import gameData from '../data/game';
 import citiesData from '../data/cities';
 
-let unsubscribe = null;
 const cities = derived(
   [gameData, citiesData],
   ([$game, $cities], set) => {
-    if (unsubscribe) unsubscribe();
+    let unsubscribe = null;
     if ($game && $cities) {
       const allCities = $cities.docs.reduce((acc, city) => {
         acc[city.id] = city.data();
@@ -25,6 +24,8 @@ const cities = derived(
     } else {
       set([]);
     }
+
+    return () => unsubscribe && unsubscribe();
   },
   []
 );

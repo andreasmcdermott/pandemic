@@ -1,5 +1,6 @@
 <script>
   import { signin } from "../stores/user";
+  import Button from "./Button.svelte";
 
   let email = window.localStorage.getItem("email") || "";
   let password = "";
@@ -40,6 +41,6 @@
       }} />
     <label>Password</label>
     <input type="password" bind:value={password} />
-    <button type="submit">Sign in</button>
+    <Button type="submit">Sign in</Button>
   </form>
 </div>

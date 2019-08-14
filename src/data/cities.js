@@ -2,7 +2,7 @@ import { readable } from 'svelte/store';
 import firebase from './fb';
 
 const cities = readable(null, set => {
-  firebase
+  return firebase
     .firestore()
     .collection('cities')
     .orderBy('name')

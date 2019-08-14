@@ -2,7 +2,7 @@ import { readable } from 'svelte/store';
 import firebase from './fb';
 
 const characters = readable(null, set => {
-  firebase
+  return firebase
     .firestore()
     .collection('characters')
     .orderBy('name')
