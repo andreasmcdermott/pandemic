@@ -3,7 +3,11 @@
   import Button from "./Button.svelte";
   import UserDisplay from "./UserDisplay.svelte";
   import PlayerSettings from "./PlayerSettings.svelte";
+  import OtherPlayers from "./OtherPlayers.svelte";
   import LogOut from "./LogOut.svelte";
+
+  import user from "../stores/user";
+  import player from "../stores/player";
 </script>
 
 <style>
@@ -15,10 +19,13 @@
   }
 </style>
 
-<ExpandablePanel edge="right" expanded={true}>
-  <div class="account">
-    <UserDisplay />
-    <PlayerSettings />
-    <LogOut />
-  </div>
-</ExpandablePanel>
+{#if $user && $player}
+  <ExpandablePanel edge="right" expanded={true}>
+    <div class="account">
+      <UserDisplay color={$player.color} name={$user.name} />
+      <PlayerSettings />
+      <OtherPlayers />
+      <LogOut />
+    </div>
+  </ExpandablePanel>
+{/if}

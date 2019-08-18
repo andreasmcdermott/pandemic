@@ -1,6 +1,6 @@
 <script>
-  import user from "../stores/user";
-  import player from "../stores/player";
+  export let color;
+  export let name;
 </script>
 
 <style>
@@ -17,9 +17,7 @@
   }
 </style>
 
-{#if $user && $player}
-  <div class="user-info">
-    <div class="user-color" style="background: {$player.color}" />
-    {$user.name}
-  </div>
-{/if}
+<div class="user-info">
+  <div class="user-color" style="background: {color || 'white'}" />
+  {name || 'N/A'}
+</div>
