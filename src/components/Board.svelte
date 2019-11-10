@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher } from "svelte";
 
-  import game from "../stores/game";
+  import game, { updateInfectionRate, updateOutbreaks } from "../stores/game";
   import cities from "../stores/cities";
 
   import City from "./City.svelte";
@@ -26,6 +26,7 @@
     position: relative;
   }
   .infectionRate {
+    cursor: pointer;
     width: 30px;
     height: 30px;
     position: absolute;
@@ -35,6 +36,7 @@
     top: 158px;
   }
   .outbreak {
+    cursor: pointer;
     width: 30px;
     height: 30px;
     position: absolute;
@@ -60,8 +62,13 @@
 
   <div
     class="outbreak"
-    style="left: {outbreakPosX}px; top: {outbreakPosY}px;" />
-  <div class="infectionRate" style="left: {infectionPosX}px;" />
+    style="left: {outbreakPosX}px; top: {outbreakPosY}px;"
+    on:click={() => updateOutbreaks(($game.outbreaks + 1) % 9)} />
+
+  <div
+    class="infectionRate"
+    style="left: {infectionPosX}px;"
+    on:click={() => updateInfectionRate(($game.infection_rate + 1) % 7)} />
 
   <Infections />
 </div>

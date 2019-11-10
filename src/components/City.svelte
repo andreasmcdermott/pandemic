@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher } from "svelte";
+  import { updateCity } from "../stores/cities";
 
   import game from "../stores/game";
   import players from "../stores/players";
@@ -8,6 +9,12 @@
   export let city = null;
 
   const dispatch = createEventDispatcher();
+
+  const increaseInfection = infection => {
+    if (!city) return;
+    city.infections[infection] = (city.infections[infection] + 1) % 4;
+    updateCity(city.id, city);
+  };
 </script>
 
 <style>
@@ -18,9 +25,11 @@
     transform: translate(-50%, -50%);
     font-size: 10px;
     color: white;
+    cursor: pointer;
   }
   .city.selected {
     border-color: skyblue;
+    z-index: 10;
   }
   .panic,
   .name {
@@ -132,8 +141,11 @@
     <div class="name">{city.name}</div>
     <div class="city-quarantine" />
     <div class="city-infections">
-      {#each Object.entries(city.infections).filter(([, count]) => count > 0) as [infection, count]}
-        <span class={infection} class:faded={infection === 'yellow'}>
+      {#each Object.entries(city.infections).filter(([, count]) => selected || count > 0) as [infection, count]}
+        <span
+          class={infection}
+          class:faded={infection === 'yellow'}
+          on:click={() => increaseInfection(infection)}>
           {count}
         </span>
       {/each}
