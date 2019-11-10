@@ -30,6 +30,15 @@ export function toggleEradicated(infection) {
   $game.ref.update({ eradicated });
 }
 
+export function clearInfection(infection) {
+  const $game = get(gameData);
+  if (!$game) return;
+  const { eradicated, cured } = $game.data();
+  eradicated[infection] = false;
+  cured[infection] = false;
+  $game.ref.update({ eradicated, cured });
+}
+
 export function updateInfectionRate(val) {
   const $game = get(gameData);
   if (!$game) return;

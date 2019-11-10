@@ -1,23 +1,20 @@
 <script>
   import game, { toggleCured, toggleEradicated } from "../stores/game";
   import Container from "./Container.svelte";
+  import { capitalize } from "../utils/strings";
+
   let selectedInfection = "";
 </script>
 
 <Container label="Infection">
-  <select
-    bind:value={selectedInfection}
-    on:change={e => {
-      selectedInfection = e.target.value;
-    }}>
-    <option value="">Select infection</option>
-    <option value="yellow">Yellow</option>
-    <option value="red">Red</option>
-    <option value="blue">Blue</option>
-    <option value="black">Black</option>
-  </select>
+  {#each ['Red', 'Blue', 'Black'] as infection}
+    <button on:click={() => (selectedInfection = infection.toLowerCase())}>
+      {infection}
+    </button>
+  {/each}
 
   {#if selectedInfection}
+    <strong>{capitalize(selectedInfection)}:</strong>
     <label>
       <input
         type="checkbox"

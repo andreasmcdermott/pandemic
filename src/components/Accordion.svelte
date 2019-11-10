@@ -1,5 +1,4 @@
 <script>
-  export let label;
   let expanded = false;
 </script>
 

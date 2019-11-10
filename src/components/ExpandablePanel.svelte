@@ -16,7 +16,6 @@
     z-index: 2;
     top: 0;
     transition: 0.5s;
-    height: 100%;
   }
 
   .expandable-inner {

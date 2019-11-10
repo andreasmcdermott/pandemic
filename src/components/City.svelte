@@ -1,9 +1,13 @@
 <script>
+  import { createEventDispatcher } from "svelte";
+
   import game from "../stores/game";
   import players from "../stores/players";
 
   export let selected = false;
   export let city = null;
+
+  const dispatch = createEventDispatcher();
 </script>
 
 <style>
@@ -97,6 +101,23 @@
   .city.faded .player {
     border-color: black !important;
   }
+  .city-quarantine {
+    display: none;
+    background-color: white;
+    background-image: url("/biohazard.png");
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+  }
+  .city.quarantine > .city-quarantine {
+    display: block;
+  }
 </style>
 
 {#if city}
@@ -105,8 +126,11 @@
     class="city {city.color}"
     class:faded={city.faded}
     class:selected
-    style={`left: ${city.x}px; top: ${city.y}px; width: ${$game.city_size}px; height: ${$game.city_size}px; background: ${city.faded ? 'lime' : city.color};`}>
+    class:quarantine={city.quarantine}
+    style={`left: ${city.x}px; top: ${city.y}px; width: ${$game.city_size}px; height: ${$game.city_size}px; background: ${city.faded ? 'lime' : city.color};`}
+    on:click={() => dispatch('select')}>
     <div class="name">{city.name}</div>
+    <div class="city-quarantine" />
     <div class="city-infections">
       {#each Object.entries(city.infections).filter(([, count]) => count > 0) as [infection, count]}
         <span class={infection} class:faded={infection === 'yellow'}>

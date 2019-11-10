@@ -1,13 +1,14 @@
 <script>
   import { createEventDispatcher } from "svelte";
   import cities, { updateCity } from "../stores/cities";
+  import { updatePlayerCity } from "../stores/player";
 
   import Container from "./Container.svelte";
   import CitySelector from "./CitySelector.svelte";
 
   const dispatch = createEventDispatcher();
 
-  let selectedCity = null;
+  export let selectedCity = null;
 
   let city;
   let panic;
@@ -17,18 +18,24 @@
   let quarantine;
   let faded;
 
+  $: {
+    if (selectedCity && (!city || city.id !== selectedCity)) {
+      city = $cities.find(city => city.id === selectedCity) || {};
+      panic = city.panic || "0";
+      militaryBase = city.militaryBase || false;
+      researchStation = city.researchStation || false;
+      infections = city.infections || { red: 0, blue: 0, black: 0, yellow: 0 };
+      quarantine = city.quarantine || false;
+      faded = city.faded || false;
+    }
+  }
+
   function selectCity(cityId) {
     selectedCity = cityId;
     dispatch("selectCity", selectedCity);
-    if (!selectedCity) return;
-
-    city = $cities.find(city => city.id === selectedCity) || {};
-    panic = city.panic || "0";
-    militaryBase = city.militaryBase || false;
-    researchStation = city.researchStation || false;
-    infections = city.infections || { red: 0, blue: 0, black: 0, yellow: 0 };
-    quarantine = city.quarantine || false;
-    faded = city.faded || false;
+    if (!selectedCity) {
+      city = null;
+    }
   }
 
   function updateSelectedCity() {
@@ -44,14 +51,26 @@
 
     updateCity(city.id, values);
 
-    selectCity("");
+    selectCity(null);
   }
 </script>
 
+<style>
+  [type="number"] {
+    width: 100%;
+  }
+</style>
+
 <Container label="City">
   <CitySelector selected={selectedCity} on:change={e => selectCity(e.detail)} />
-
   {#if selectedCity && city}
+    <button
+      on:click={() => {
+        updatePlayerCity(selectedCity);
+        selectCity(null);
+      }}>
+      Go to
+    </button>
     <Container label="Panic Level">
       <label>
         <input type="radio" value="0" bind:group={panic} />
@@ -81,13 +100,13 @@
 
     <Container label="Infections">
       <label>Black</label>
-      <input type="number" bind:value={infections.black} />
+      <input type="number" bind:value={infections.black} min="0" max="3" />
       <label>Red</label>
-      <input type="number" bind:value={infections.red} />
+      <input type="number" bind:value={infections.red} min="0" max="3" />
       <label>Blue</label>
-      <input type="number" bind:value={infections.blue} />
+      <input type="number" bind:value={infections.blue} min="0" max="3" />
       <label>Yellow</label>
-      <input type="number" bind:value={infections.yellow} />
+      <input type="number" bind:value={infections.yellow} min="0" max="3" />
     </Container>
 
     <label>
@@ -111,11 +130,6 @@
     </label>
 
     <button on:click={updateSelectedCity}>Save</button>
-    <button
-      on:click={() => {
-        selectedCity = '';
-      }}>
-      Done
-    </button>
+    <button on:click={() => selectCity(null)}>Done</button>
   {/if}
 </Container>

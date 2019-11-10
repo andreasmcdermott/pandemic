@@ -14,6 +14,12 @@
   $: adminMode = !!($user && $user.admin);
 
   let selectedCity = "";
+  let expandAdmin = false;
+
+  const selectCity = e => {
+    selectedCity = e.detail;
+    expandAdmin = true;
+  };
 </script>
 
 <style>
@@ -28,14 +34,14 @@
     <Login />
   {:else if signedIn}
     {#if $game}
-      <Board {selectedCity} />
+      <Board {selectedCity} on:selectedCity={selectCity} />
       <AccountPanel />
 
       {#if adminMode}
         <AdminPanel
-          on:selectCity={e => {
-            selectedCity = e.detail;
-          }} />
+          {selectedCity}
+          bind:expanded={expandAdmin}
+          on:selectCity={selectCity} />
       {/if}
     {:else}
       <Loading />
