@@ -26,6 +26,10 @@
   .root {
     position: relative;
     height: 100%;
+    background: #fafafa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 </style>
 

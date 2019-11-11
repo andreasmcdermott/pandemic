@@ -34,6 +34,9 @@
   .board-container {
     display: inline-block;
     position: relative;
+    background: #333;
+    border: 5px solid gray;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   }
   .infectionRate {
     cursor: pointer;
@@ -123,7 +126,7 @@
   <img
     alt="board"
     class="image"
-    src="/pandemic_board.jpg"
+    src="/pandemic_board_simple.png"
     style={`width: ${$game.board_width}px; height: ${$game.board_height}px;`} />
 
   {#each $cities as city}
