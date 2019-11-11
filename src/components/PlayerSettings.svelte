@@ -21,4 +21,8 @@
       selected={$player.city}
       on:change={e => updatePlayerCity(e.detail)} />
   </Container>
+
+  <Container label="Cards">
+    <div>TOdo</div>
+  </Container>
 {/if}

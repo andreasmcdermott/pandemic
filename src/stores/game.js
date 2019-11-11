@@ -50,3 +50,9 @@ export function updateOutbreaks(val) {
   if (!$game) return;
   $game.ref.update({ outbreaks: val });
 }
+
+export function updateObjectives(objectives) {
+  const $game = get(gameData);
+  if (!$game) return;
+  $game.ref.update({ objectives });
+}
