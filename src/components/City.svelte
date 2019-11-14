@@ -1,9 +1,9 @@
 <script>
-  import { createEventDispatcher } from "svelte";
-  import { updateCity } from "../stores/cities";
+  import { createEventDispatcher } from 'svelte';
+  import { updateCity } from '../stores/cities';
 
-  import game from "../stores/game";
-  import players from "../stores/players";
+  import game from '../stores/game';
+  import players from '../stores/players';
 
   export let selected = false;
   export let city = null;
@@ -113,7 +113,7 @@
   .city-quarantine {
     display: none;
     background-color: white;
-    background-image: url("/biohazard.png");
+    background-image: url('/biohazard.png');
     background-size: contain;
     background-position: center center;
     background-repeat: no-repeat;
@@ -137,7 +137,7 @@
     class:selected
     class:quarantine={city.quarantine}
     style={`left: ${city.x}px; top: ${city.y}px; width: ${$game.city_size}px; height: ${$game.city_size}px; background: ${city.faded ? 'lime' : city.color};`}
-    on:click={() => dispatch('select')}>
+    on:click={() => dispatch(selected ? 'unselect' : 'select')}>
     <div class="name">{city.name}</div>
     <div class="city-quarantine" />
     <div class="city-infections">
@@ -158,9 +158,7 @@
       <div class="researchStation" />
     {/if}
     {#each Object.values($players).filter(player => player.city === city.id) as player, i}
-      <div
-        class="player"
-        style="background: {player.color}; left: {1 + i * 4}px" />
+      <div class="player" style="background: {player.color}; left: {1 + i * 4}px" />
     {/each}
   </div>
 {/if}

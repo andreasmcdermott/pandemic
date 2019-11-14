@@ -1,15 +1,11 @@
 <script>
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher } from 'svelte';
 
-  import game, {
-    updateInfectionRate,
-    updateOutbreaks,
-    updateObjectives
-  } from "../stores/game";
-  import cities from "../stores/cities";
-  import Button from "./Button.svelte";
-  import City from "./City.svelte";
-  import Infections from "./Infections.svelte";
+  import game, { updateInfectionRate, updateOutbreaks, updateObjectives } from '../stores/game';
+  import cities from '../stores/cities';
+  import Button from './Button.svelte';
+  import City from './City.svelte';
+  import Infections from './Infections.svelte';
 
   export let selectedCity;
 
@@ -91,7 +87,7 @@
     display: block;
   }
   .objective .mandatory-toggle {
-    content: " ";
+    content: ' ';
     z-index: 2;
     background: black;
     border: 1px solid red;
@@ -133,7 +129,8 @@
     <City
       {city}
       selected={selectedCity === city.id}
-      on:select={e => dispatch('selectedCity', city.id)} />
+      on:select={e => dispatch('selectedCity', city.id)}
+      on:unselect={e => dispatch('unselectedCity')} />
   {/each}
 
   <div class="objectives">
