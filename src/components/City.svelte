@@ -137,7 +137,7 @@
     class:selected
     class:quarantine={city.quarantine}
     style={`left: ${city.x}px; top: ${city.y}px; width: ${$game.city_size}px; height: ${$game.city_size}px; background: ${city.faded ? 'lime' : city.color};`}
-    on:click={() => dispatch(selected ? 'unselect' : 'select')}>
+    on:click={() => dispatch(selected ? 'unselectCity' : 'selectCity', city.id)}>
     <div class="name">{city.name}</div>
     <div class="city-quarantine" />
     <div class="city-infections">
@@ -145,12 +145,12 @@
         <span
           class={infection}
           class:faded={infection === 'yellow'}
-          on:click={() => increaseInfection(infection)}>
+          on:click|preventDefault|stopPropagation={() => increaseInfection(infection)}>
           {count}
         </span>
       {/each}
     </div>
-    <div class="panic">{city.panic || ''}</div>
+    <div class="panic">{city.panic}</div>
     {#if city.militaryBase}
       <div class="militaryBase" />
     {/if}

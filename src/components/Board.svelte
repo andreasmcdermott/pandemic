@@ -1,6 +1,4 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
-
   import game, { updateInfectionRate, updateOutbreaks, updateObjectives } from '../stores/game';
   import cities from '../stores/cities';
   import Button from './Button.svelte';
@@ -9,15 +7,17 @@
 
   export let selectedCity;
 
-  const dispatch = createEventDispatcher();
-
   let outbreakPosX = 0;
   let outbreakPosY = 0;
   let infectionPosX = 0;
 
-  $: outbreakPosX = 40 + ($game.outbreaks % 2) * 40;
-  $: outbreakPosY = 340 + $game.outbreaks * 28;
-  $: infectionPosX = 1008 + $game.infection_rate * 46.5;
+  const getOutbreakPosX = index => 40 + (index % 2) * 40;
+  const getOutbreakPosY = index => 340 + index * 28;
+  const getInfectionPosX = index => 1008 + index * 46.5;
+
+  $: outbreakPosX = getOutbreakPosX($game.outbreaks);
+  $: outbreakPosY = getOutbreakPosY($game.outbreaks);
+  $: infectionPosX = getInfectionPosX($game.infection_rate);
 
   const updateObjective = (values, index) => {
     const objectives = $game.objectives;
@@ -35,7 +35,6 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   }
   .infectionRate {
-    cursor: pointer;
     width: 30px;
     height: 30px;
     position: absolute;
@@ -43,15 +42,24 @@
     background: darkgreen;
     border: 2px solid white;
     top: 158px;
+    opacity: 0.25;
+  }
+  .infectionRate.active {
+    cursor: pointer;
+    opacity: 1;
   }
   .outbreak {
-    cursor: pointer;
     width: 30px;
     height: 30px;
     position: absolute;
     border-radius: 50px;
     background: purple;
+    opacity: 0.25;
     border: 2px solid white;
+  }
+  .outbreak.active {
+    cursor: pointer;
+    opacity: 1;
   }
   .objectives {
     position: absolute;
@@ -125,13 +133,11 @@
     src="/pandemic_board_simple.png"
     style={`width: ${$game.board_width}px; height: ${$game.board_height}px;`} />
 
-  {#each $cities as city}
-    <City
-      {city}
-      selected={selectedCity === city.id}
-      on:select={e => dispatch('selectedCity', city.id)}
-      on:unselect={e => dispatch('unselectedCity')} />
-  {/each}
+  <div class="cities">
+    {#each $cities as city}
+      <City {city} selected={selectedCity === city.id} on:selectCity on:unselectCity />
+    {/each}
+  </div>
 
   <div class="objectives">
     {#each $game.objectives as objective, i}
@@ -164,15 +170,26 @@
     {/if}
   </div>
 
-  <div
-    class="outbreak"
-    style="left: {outbreakPosX}px; top: {outbreakPosY}px;"
-    on:click={() => updateOutbreaks(($game.outbreaks + 1) % 9)} />
+  <div class="outbreaks">
+    {#each [0, 1, 2, 3, 4, 5, 6, 7, 8] as o}
+      <div class="outbreak" style="left: {getOutbreakPosX(o)}px; top: {getOutbreakPosY(o)}px;" />
+    {/each}
+    <div
+      class="outbreak active"
+      style="left: {outbreakPosX}px; top: {outbreakPosY}px;"
+      on:click={() => updateOutbreaks(($game.outbreaks + 1) % 9)} />
+  </div>
+
+<div class="infectionRates">
+  {#each [0, 1, 2 ,3, 4, 5, 6] as i}
+    <div class="infectionRate" style="left: {getInfectionPosX(i)}px;" />
+  {/each}
 
   <div
-    class="infectionRate"
+    class="infectionRate active"
     style="left: {infectionPosX}px;"
     on:click={() => updateInfectionRate(($game.infection_rate + 1) % 7)} />
+</div>
 
   <Infections />
 </div>

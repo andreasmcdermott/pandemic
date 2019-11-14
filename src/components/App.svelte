@@ -32,9 +32,9 @@
     position: relative;
     height: 100%;
     background: #fafafa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: center; */
   }
 </style>
 
@@ -43,7 +43,7 @@
     <Login />
   {:else if signedIn}
     {#if $game}
-      <Board bind:selectedCity on:selectedCity={selectCity} on:unselectedCity={unselectCity} />
+      <Board bind:selectedCity on:selectCity={selectCity} on:unselectCity={unselectCity} />
       <AccountPanel />
 
       {#if adminMode}

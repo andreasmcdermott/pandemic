@@ -1,12 +1,12 @@
 <script>
-  import game, {
-    toggleCured,
-    toggleEradicated,
-    clearInfection
-  } from "../stores/game";
+  import game, { toggleCured, toggleEradicated, clearInfection } from '../stores/game';
 </script>
 
 <style>
+  .infection-background {
+    position: absolute;
+    display: flex;
+  }
   .infection {
     position: absolute;
     bottom: 25px;
@@ -39,7 +39,7 @@
     border-bottom: 1px solid white;
   }
   .infection > .cured:after {
-    content: " ";
+    content: ' ';
     position: absolute;
     left: 50%;
     top: 50%;
@@ -60,7 +60,7 @@
     transform: translate(-50%, -50%);
     width: 75%;
     height: 75%;
-    background: url("/skull.svg") center center;
+    background: url('/skull.svg') center center;
     background-size: contain;
     background-repeat: no-repeat;
   }
@@ -70,20 +70,22 @@
 </style>
 
 {#each ['red', 'blue', 'black'] as infection}
-  <div
-    class="infection {infection}"
-    class:cured={$game.cured[infection]}
-    class:eradicated={$game.eradicated[infection]}
-    on:click={() => {
-      if (!$game.cured[infection] && !$game.eradicated[infection]) {
-        toggleCured(infection);
-      } else if ($game.cured[infection] && !$game.eradicated[infection]) {
-        toggleEradicated(infection);
-      } else if ($game.cured[infection] && $game.eradicated[infection]) {
-        clearInfection(infection);
-      }
-    }}>
-    <div class="cured" />
-    <div class="eradicated" />
+  <div class="infection-background">
+    <div
+      class="infection {infection}"
+      class:cured={$game.cured[infection]}
+      class:eradicated={$game.eradicated[infection]}
+      on:click={() => {
+        if (!$game.cured[infection] && !$game.eradicated[infection]) {
+          toggleCured(infection);
+        } else if ($game.cured[infection] && !$game.eradicated[infection]) {
+          toggleEradicated(infection);
+        } else if ($game.cured[infection] && $game.eradicated[infection]) {
+          clearInfection(infection);
+        }
+      }}>
+      <div class="cured" />
+      <div class="eradicated" />
+    </div>
   </div>
 {/each}
