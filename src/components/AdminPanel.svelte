@@ -2,12 +2,11 @@
   import game, { updateInfectionRate, updateOutbreaks } from '../stores/game';
   import cities, { updateCity } from '../stores/cities';
 
-  import Button from './Button.svelte';
   import Container from './Container.svelte';
+  import Button from './Button.svelte';
   import ExpandablePanel from './ExpandablePanel.svelte';
-  import UpdateCityForm from './UpdateCityForm.svelte';
-  import UpdateInfectionForm from './UpdateInfectionForm.svelte';
   import CityInfo from './CityInfo.svelte';
+  import RegionInfo from './RegionInfo.svelte';
 
   export let selectedCity;
   export let expanded = false;
@@ -55,9 +54,17 @@
           <CityInfo bind:city />
         {:else}Select a city{/if}
       </div>
+      <div class="regions">
+        <RegionInfo region="north-america" />
+        <RegionInfo region="south-america" />
+        <RegionInfo region="africa" />
+        <RegionInfo region="europe" />
+        <RegionInfo region="asia" />
+        <RegionInfo region="pacific-rim" />
+      </div>
       <div class="actions">
         <Container label="Actions">
-          <Button on:click={resetCities}>Reset board</Button>
+          <Button on:click={resetCities}>Reset infections</Button>
         </Container>
       </div>
     </div>

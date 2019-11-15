@@ -3,7 +3,7 @@
 
   const OUTBREAKS = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   const getOutbreakPosX = index => 40 + (index % 2) * 40;
-  const getOutbreakPosY = index => 340 + index * 28;
+  const getOutbreakPosY = index => 240 + index * 28;
 </script>
 
 <style>

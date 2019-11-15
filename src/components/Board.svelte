@@ -5,6 +5,7 @@
   import Outbreaks from './Outbreaks.svelte';
   import InfectionRate from './InfectionRate.svelte';
   import Objectives from './Objectives.svelte';
+  import Search from './Search.svelte';
 
   export let selectedCity;
 </script>
@@ -26,9 +27,10 @@
     src="/pandemic_board_simple.png"
     style={`width: ${$game.board_width}px; height: ${$game.board_height}px;`} />
 
-  <Cities bind:selectedCity />
+  <Cities bind:selectedCity on:selectCity on:unselectCity />
   <Outbreaks />
   <InfectionRate />
   <Infections />
+  <Search />
   <Objectives />
 </div>

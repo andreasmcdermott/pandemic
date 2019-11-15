@@ -1,12 +1,9 @@
 <script>
-  import player, {
-    updatePlayerCharacter,
-    updatePlayerCity
-  } from "../stores/player";
+  import player, { updatePlayerCharacter, updatePlayerCity } from '../stores/player';
 
-  import Container from "./Container.svelte";
-  import CharacterSelector from "./CharacterSelector.svelte";
-  import CitySelector from "./CitySelector.svelte";
+  import Container from './Container.svelte';
+  import CharacterSelector from './CharacterSelector.svelte';
+  import CitySelector from './CitySelector.svelte';
 </script>
 
 {#if $player}
@@ -17,12 +14,10 @@
   </Container>
 
   <Container label="City">
-    <CitySelector
-      selected={$player.city}
-      on:change={e => updatePlayerCity(e.detail)} />
+    <CitySelector selected={$player.city} on:change={e => updatePlayerCity(e.detail)} />
   </Container>
 
   <Container label="Cards">
-    <div>TOdo</div>
+    <div>Todo</div>
   </Container>
 {/if}

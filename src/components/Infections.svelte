@@ -12,27 +12,20 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    bottom: 125px;
-    width: 80px;
-    height: 100px;
-    border: 2px solid transparent;
+    bottom: 300px;
+    width: 70px;
+    height: 50px;
     border-top-width: 6px;
     padding-bottom: 10px;
   }
   .infection.red {
-    left: 50px;
-    border-color: red;
-    background-color: rgba(255, 0, 0, 0.1);
+    left: 40px;
   }
   .infection.blue {
-    left: 150px;
-    border-color: blue;
-    background-color: rgba(0, 0, 255, 0.1);
+    left: 130px;
   }
   .infection.black {
-    left: 250px;
-    border-color: black;
-    background-color: rgba(0, 0, 0, 0.1);
+    left: 220px;
   }
   .display {
     position: relative;
