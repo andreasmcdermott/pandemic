@@ -9,25 +9,49 @@
   }
   .infection {
     position: absolute;
-    bottom: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    bottom: 125px;
+    width: 80px;
+    height: 100px;
+    border: 2px solid transparent;
+    border-top-width: 6px;
+    padding-bottom: 10px;
+  }
+  .infection.red {
+    left: 50px;
+    border-color: red;
+    background-color: rgba(255, 0, 0, 0.1);
+  }
+  .infection.blue {
+    left: 150px;
+    border-color: blue;
+    background-color: rgba(0, 0, 255, 0.1);
+  }
+  .infection.black {
+    left: 250px;
+    border-color: black;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  .display {
+    position: relative;
     height: 40px;
     width: 40px;
     border-radius: 50%;
     cursor: pointer;
+    border: 1px solid white;
   }
-  .infection.red {
-    left: 105px;
+  .infection.red > .display {
     background: red;
   }
-  .infection.blue {
-    left: 190px;
+  .infection.blue > .display {
     background: blue;
   }
-  .infection.black {
-    left: 270px;
+  .infection.black > .display {
     background: black;
   }
-  .infection > .cured {
+  .display > .cured {
     display: none;
     position: absolute;
     left: 50%;
@@ -38,7 +62,7 @@
     border-top: 1px solid white;
     border-bottom: 1px solid white;
   }
-  .infection > .cured:after {
+  .display > .cured:after {
     content: ' ';
     position: absolute;
     left: 50%;
@@ -49,10 +73,10 @@
     border: 2px solid white;
     border-radius: 50%;
   }
-  .infection.cured:not(.eradicated) > .cured {
+  .display.cured:not(.eradicated) > .cured {
     display: block;
   }
-  .infection > .eradicated {
+  .display > .eradicated {
     display: none;
     position: absolute;
     top: 50%;
@@ -64,28 +88,30 @@
     background-size: contain;
     background-repeat: no-repeat;
   }
-  .infection.eradicated > .eradicated {
+  .display.eradicated > .eradicated {
     display: block;
   }
 </style>
 
 {#each ['red', 'blue', 'black'] as infection}
   <div class="infection-background">
-    <div
-      class="infection {infection}"
-      class:cured={$game.cured[infection]}
-      class:eradicated={$game.eradicated[infection]}
-      on:click={() => {
-        if (!$game.cured[infection] && !$game.eradicated[infection]) {
-          toggleCured(infection);
-        } else if ($game.cured[infection] && !$game.eradicated[infection]) {
-          toggleEradicated(infection);
-        } else if ($game.cured[infection] && $game.eradicated[infection]) {
-          clearInfection(infection);
-        }
-      }}>
-      <div class="cured" />
-      <div class="eradicated" />
+    <div class="infection {infection}">
+      <div
+        class="display"
+        class:cured={$game.cured[infection]}
+        class:eradicated={$game.eradicated[infection]}
+        on:click={() => {
+          if (!$game.cured[infection] && !$game.eradicated[infection]) {
+            toggleCured(infection);
+          } else if ($game.cured[infection] && !$game.eradicated[infection]) {
+            toggleEradicated(infection);
+          } else if ($game.cured[infection] && $game.eradicated[infection]) {
+            clearInfection(infection);
+          }
+        }}>
+        <div class="cured" />
+        <div class="eradicated" />
+      </div>
     </div>
   </div>
 {/each}
