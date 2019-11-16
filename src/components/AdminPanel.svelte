@@ -4,6 +4,7 @@
 
   import Container from './Container.svelte';
   import Button from './Button.svelte';
+  import CharacterEditor from './CharacterEditor.svelte';
   import ExpandablePanel from './ExpandablePanel.svelte';
   import CityInfo from './CityInfo.svelte';
   import RegionInfo from './RegionInfo.svelte';
@@ -61,6 +62,9 @@
         <RegionInfo region="europe" />
         <RegionInfo region="asia" />
         <RegionInfo region="pacific-rim" />
+      </div>
+      <div class="characters">
+        <CharacterEditor />
       </div>
       <div class="actions">
         <Container label="Actions">

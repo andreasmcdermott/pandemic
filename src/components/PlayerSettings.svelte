@@ -3,6 +3,7 @@
 
   import Container from './Container.svelte';
   import CharacterSelector from './CharacterSelector.svelte';
+  import CharacterInfo from './CharacterInfo.svelte';
   import CitySelector from './CitySelector.svelte';
 </script>
 
@@ -11,6 +12,7 @@
     <CharacterSelector
       selected={$player.character}
       on:change={e => updatePlayerCharacter(e.detail)} />
+    <CharacterInfo character={$player.character} />
   </Container>
 
   <Container label="City">

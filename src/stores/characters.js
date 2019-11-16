@@ -1,4 +1,4 @@
-import { derived } from 'svelte/store';
+import { derived, get } from 'svelte/store';
 import charactersData from '../data/characters';
 
 const characters = derived(
@@ -14,3 +14,12 @@ const characters = derived(
 );
 
 export default characters;
+
+export function updateCharacter(id, values) {
+  const $data = get(charactersData);
+  if (!$data) return;
+  const char = $data.docs.find(c => c.id === id);
+  if (char) {
+    char.ref.update(values);
+  }
+}
