@@ -7,15 +7,7 @@
 
   let selectedCharacter;
   let character;
-  $: {
-    character = $characters.find(c => c.id === selectedCharacter);
-    if (character) {
-      character.abilities = character.abilities || [];
-      character.relationships = character.relationships || [];
-      character.upgrades = character.upgrades || [];
-      character.risks = character.risks || [];
-    }
-  }
+  $: character = $characters.find(c => c.id === selectedCharacter);
 </script>
 
 <Container label="Characters">
@@ -26,25 +18,25 @@
     }} />
   {#if character}
     <CharacterTrait
-      items={character.abilities}
+      items={character.abilities || []}
       type="Abilities"
       on:change={e => {
         updateCharacter(selectedCharacter, { abilities: e.detail });
       }} />
     <CharacterTrait
-      items={character.relationships}
+      items={character.relationships || []}
       type="Relationships"
       on:change={e => {
         updateCharacter(selectedCharacter, { relationships: e.detail });
       }} />
     <CharacterTrait
-      items={character.upgrades}
+      items={character.upgrades || []}
       type="Upgrades"
       on:change={e => {
         updateCharacter(selectedCharacter, { upgrades: e.detail });
       }} />
     <CharacterTrait
-      items={character.scars}
+      items={character.scars || []}
       type="Scars"
       on:change={e => {
         updateCharacter(selectedCharacter, { scars: e.detail });
