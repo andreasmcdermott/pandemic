@@ -56,3 +56,9 @@ export function updateObjectives(objectives) {
   if (!$game) return;
   $game.ref.update({ objectives });
 }
+
+export function updateSearches(searches) {
+  const $game = get(gameData);
+  if (!$game) return;
+  $game.ref.update({ searches });
+}

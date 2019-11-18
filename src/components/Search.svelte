@@ -1,6 +1,5 @@
 <script>
-  let current = 0;
-  let target = 8;
+  import game, { updateSearches } from '../stores/game';
   const end = 11;
 
   const getPosition = index => {
@@ -17,20 +16,42 @@
 
     return `left: ${left}px; top: ${top}px`;
   };
+
+  const increaseSearch = (searchIndex, clickedIndex) => {
+    const searches = $game.searches;
+    const search = searches[searchIndex];
+    if (search.current === clickedIndex) {
+      search.current = (search.current + 1) % end;
+    } else if (search.target === clickedIndex) {
+      search.target = (search.target + 1) % (end + 1);
+    } else return;
+
+    updateSearches(searches);
+  };
 </script>
 
 <style>
-  .container {
+  .outer_container {
     position: absolute;
-    bottom: 170px;
+    top: 610px;
     left: 40px;
-    width: 175px;
-    height: 55px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .container {
+    width: 180px;
     background: rgba(255, 255, 255, 0.2);
     color: white;
     font-size: 12px;
     border: 1px solid white;
-    padding: 5px;
+    margin-bottom: 10px;
+  }
+
+  .dots {
+    width: 100%;
+    height: 60px;
+    position: relative;
   }
 
   .dot {
@@ -60,17 +81,31 @@
     color: blue;
     border-color: blue;
   }
+
+  .text {
+    padding: 5px;
+    line-height: 10px;
+    font-size: 10px;
+  }
 </style>
 
-<div class="container">
-  {#each [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] as i}
-    <div
-      class="dot"
-      class:target={i === target}
-      class:current={i === current}
-      class:end={i === end}
-      style={getPosition(i)}>
-      {i}
+<div class="outer_container">
+  {#each $game.searches as search, s}
+    <div class="container">
+      <div class="dots">
+        {#each [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] as i}
+          <div
+            class="dot"
+            class:target={i === search.target}
+            class:current={i === search.current}
+            class:end={i === end}
+            style={getPosition(i)}
+            on:click={() => increaseSearch(s, i)}>
+            {i}
+          </div>
+        {/each}
+      </div>
+      <div class="text">{search.text}</div>
     </div>
   {/each}
 </div>
