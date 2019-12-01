@@ -27,3 +27,9 @@ export async function updatePlayerCity(city) {
   if (!$player) return;
   $player.ref.update({ city });
 }
+
+export async function updateCards(cards) {
+  const $player = get(playerData);
+  if (!$player) return;
+  $player.ref.update({ cards });
+}
