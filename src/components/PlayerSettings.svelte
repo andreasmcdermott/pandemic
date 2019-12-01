@@ -21,6 +21,6 @@
   </Container>
 
   <Container label="Cards">
-    <Cards player={$player} />
+    <Cards canEdit={true} player={$player} />
   </Container>
 {/if}

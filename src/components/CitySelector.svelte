@@ -1,10 +1,10 @@
 <script>
-  import { createEventDispatcher } from "svelte";
-  import cities from "../stores/cities";
+  import { createEventDispatcher } from 'svelte';
+  import cities from '../stores/cities';
 
   const dispatch = createEventDispatcher();
 
-  export let selected = "";
+  export let selected = '';
 </script>
 
 <select

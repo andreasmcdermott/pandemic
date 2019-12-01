@@ -4,6 +4,7 @@
   import player from '../stores/player';
   import { capitalize } from '../utils/strings';
 
+  import Cards from './Cards.svelte';
   import UserDisplay from './UserDisplay.svelte';
   import Container from './Container.svelte';
   import Accordion from './Accordion.svelte';
@@ -37,7 +38,7 @@
     </Container>
     <Container label="City">{capitalize(player.city) || 'N/A'}</Container>
     <Container label="Cards">
-      <div>Todo</div>
+      <Cards canEdit={false} {player} />
     </Container>
   </Accordion>
 {/each}

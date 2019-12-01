@@ -1,16 +1,15 @@
 <script>
-  import cities from '../stores/cities';
-  import cards from '../stores/cards';
-
+  import { createEventDispatcher } from 'svelte';
   export let card;
+  export let canEdit = false;
 
-  let city = null;
-  let cardObject = null;
+  const dispatch = createEventDispatcher();
 
-  $: {
-    city = $cities.find(c => c.id === card) || {};
-    cardObject = $cards.find(c => c.id === card) || {};
-  }
+  const remove = () => {
+    if (canEdit) {
+      dispatch('remove');
+    }
+  };
 </script>
 
 <style>
@@ -18,6 +17,7 @@
     position: relative;
     font-size: 8px;
     line-height: 12px;
+    margin-bottom: 1px;
   }
 
   .card:hover .eventInfo {
@@ -26,6 +26,10 @@
 
   .card .name {
     margin-left: 20px;
+  }
+
+  .card.canEdit .name {
+    cursor: pointer;
   }
 
   .header {
@@ -38,10 +42,22 @@
     position: absolute;
     width: 10px;
     height: 10px;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     left: 0;
     top: 0;
     background: white;
+    border: 1px solid black;
+  }
+
+  .x {
+    display: none;
+    color: black;
+  }
+
+  .card.canEdit:hover .x {
+    display: block;
   }
 
   .color.red {
@@ -50,6 +66,10 @@
 
   .color.black {
     background: black;
+  }
+
+  .color.black .x {
+    color: white;
   }
 
   .color.blue {
@@ -69,20 +89,24 @@
   }
 </style>
 
-<div class="card">
-  <div class="color {city.color}" class:faded={city.faded} />
-  <span class="name">
-    <strong class="header">{city.name || cardObject.eventName}</strong>
-    <span>({city.region || 'N/A'})</span>
-    <span>{cardObject.eventDescription ? '*' : ''}</span>
-  </span>
-  {#if cardObject.eventType}
-    <span class="eventInfo">
-      {#if city.name}
-        <span class="eventName">{cardObject.eventName}:</span>
-      {/if}
-      <span class="eventType">{cardObject.eventType}</span>
-      <div class="eventDescription">{cardObject.eventDescription}</div>
+{#if card}
+  <div class="card" class:canEdit>
+    <div class="color {card.color || ''}" class:faded={card.faded}>
+      <span class="x">x</span>
+    </div>
+    <span class="name" on:click={remove}>
+      <strong class="header">{card.name || card.eventName}</strong>
+      <span>({card.region || 'N/A'})</span>
+      <span>{card.eventDescription ? '*' : ''}</span>
     </span>
-  {/if}
-</div>
+    {#if card.eventType}
+      <span class="eventInfo">
+        {#if card.name}
+          <span class="eventName">{card.eventName}:</span>
+        {/if}
+        <span class="eventType">{card.eventType}</span>
+        <div class="eventDescription">{card.eventDescription}</div>
+      </span>
+    {/if}
+  </div>
+{/if}

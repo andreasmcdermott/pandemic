@@ -1,5 +1,6 @@
 <script>
-  export let type = "button";
+  export let type = 'button';
+  export let size = 'normal';
 </script>
 
 <style>
@@ -15,8 +16,15 @@
     height: 26px;
     border-radius: 3px;
   }
+
+  .button.small {
+    height: 12px;
+    font-weight: normal;
+    display: inline-flex;
+    font-size: 10px;
+  }
 </style>
 
-<button class="button" on:click {type}>
+<button class="button" on:click {type} class:small={size === 'small'}>
   <slot />
 </button>
