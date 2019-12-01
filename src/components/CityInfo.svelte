@@ -70,7 +70,7 @@
   <div class="row">
     <strong>Panic Level:</strong>
     <span class="action" on:click={() => updateCity(city.id, { panic: (city.panic + 1) % 6 })}>
-      {panicLevels[city.panic]}
+      {panicLevels[city.panic]} ({city.panic})
     </span>
   </div>
   <div class="row">

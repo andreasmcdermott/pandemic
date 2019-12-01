@@ -14,9 +14,13 @@
 
 {#if characterObject}
   <div class="container">
-    <CharacterInfoSection header="Abilities" traits={characterObject.abilities} />
-    <CharacterInfoSection header="Relationships" traits={characterObject.relationships} />
-    <CharacterInfoSection header="Upgrades" traits={characterObject.upgrades} />
-    <CharacterInfoSection header="Scars" traits={characterObject.scars} />
+    {#if characterObject.dead}
+      <strong>Dead!</strong>
+    {:else}
+      <CharacterInfoSection header="Abilities" traits={characterObject.abilities} />
+      <CharacterInfoSection header="Relationships" traits={characterObject.relationships} />
+      <CharacterInfoSection header="Upgrades" traits={characterObject.upgrades} />
+      <CharacterInfoSection header="Scars" traits={characterObject.scars} />
+    {/if}
   </div>
 {/if}

@@ -17,29 +17,33 @@
       selectedCharacter = e.detail;
     }} />
   {#if character}
-    <CharacterTrait
-      items={character.abilities || []}
-      type="Abilities"
-      on:change={e => {
-        updateCharacter(selectedCharacter, { abilities: e.detail });
-      }} />
-    <CharacterTrait
-      items={character.relationships || []}
-      type="Relationships"
-      on:change={e => {
-        updateCharacter(selectedCharacter, { relationships: e.detail });
-      }} />
-    <CharacterTrait
-      items={character.upgrades || []}
-      type="Upgrades"
-      on:change={e => {
-        updateCharacter(selectedCharacter, { upgrades: e.detail });
-      }} />
-    <CharacterTrait
-      items={character.scars || []}
-      type="Scars"
-      on:change={e => {
-        updateCharacter(selectedCharacter, { scars: e.detail });
-      }} />
+    {#if character.dead}
+      <strong>Dead!</strong>
+    {:else}
+      <CharacterTrait
+        items={character.abilities || []}
+        type="Abilities"
+        on:change={e => {
+          updateCharacter(selectedCharacter, { abilities: e.detail });
+        }} />
+      <CharacterTrait
+        items={character.relationships || []}
+        type="Relationships"
+        on:change={e => {
+          updateCharacter(selectedCharacter, { relationships: e.detail });
+        }} />
+      <CharacterTrait
+        items={character.upgrades || []}
+        type="Upgrades"
+        on:change={e => {
+          updateCharacter(selectedCharacter, { upgrades: e.detail });
+        }} />
+      <CharacterTrait
+        items={character.scars || []}
+        type="Scars"
+        on:change={e => {
+          updateCharacter(selectedCharacter, { scars: e.detail });
+        }} />
+    {/if}
   {/if}
 </Container>

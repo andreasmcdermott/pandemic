@@ -61,7 +61,7 @@
     color: white;
     border: 1px solid white;
     width: 155px;
-    height: 110px;
+    min-height: 110px;
     padding: 5px;
     box-sizing: border-box;
     position: relative;
@@ -90,8 +90,8 @@
     border: 1px solid red;
     border-radius: 50%;
     position: absolute;
-    right: 5px;
-    top: 5px;
+    right: 0;
+    top: 0;
     width: 5px;
     height: 5px;
     display: block;

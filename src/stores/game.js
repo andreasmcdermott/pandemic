@@ -17,7 +17,7 @@ export default game;
 export function toggleCured(infection) {
   const $game = get(gameData);
   if (!$game) return;
-  const cured = $game.data().cured;
+  const { cured } = $game.data();
   cured[infection] = !cured[infection];
   $game.ref.update({ cured });
 }
@@ -25,7 +25,7 @@ export function toggleCured(infection) {
 export function toggleEradicated(infection) {
   const $game = get(gameData);
   if (!$game) return;
-  const eradicated = $game.data().eradicated;
+  const { eradicated } = $game.data();
   eradicated[infection] = !eradicated[infection];
   $game.ref.update({ eradicated });
 }
@@ -34,9 +34,24 @@ export function clearInfection(infection) {
   const $game = get(gameData);
   if (!$game) return;
   const { eradicated, cured } = $game.data();
-  eradicated[infection] = false;
-  cured[infection] = false;
-  $game.ref.update({ eradicated, cured });
+  console.log(infection, eradicated, cured);
+  $game.ref.update({
+    eradicated: { ...eradicated, [infection]: false },
+    cured: { ...cured, [infection]: false }
+  });
+}
+
+export function clearAllInfections() {
+  const $game = get(gameData);
+  if (!$game) return;
+  const { eradicated, cured } = $game.data();
+  Object.keys(eradicated).forEach(k => (eradicated[k] = false));
+  Object.keys(cured).forEach(k => (cured[k] = false));
+
+  $game.ref.update({
+    eradicated: { ...eradicated },
+    cured: { ...cured }
+  });
 }
 
 export function updateInfectionRate(val) {

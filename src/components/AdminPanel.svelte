@@ -1,5 +1,11 @@
 <script>
-  import game, { updateInfectionRate, updateOutbreaks } from '../stores/game';
+  import game, {
+    updateInfectionRate,
+    updateOutbreaks,
+    updateSearches,
+    clearAllInfections,
+    updateObjectives
+  } from '../stores/game';
   import cities, { updateCity } from '../stores/cities';
 
   import Container from './Container.svelte';
@@ -7,6 +13,7 @@
   import CharacterEditor from './CharacterEditor.svelte';
   import ExpandablePanel from './ExpandablePanel.svelte';
   import CityInfo from './CityInfo.svelte';
+  import VirusInfo from './VirusInfo.svelte';
   import RegionInfo from './RegionInfo.svelte';
 
   export let selectedCity;
@@ -15,10 +22,20 @@
   let city;
   $: city = $cities.find(c => c.id === selectedCity);
 
-  const resetCities = () => {
+  const resetBoard = () => {
+    const isSure = confirm('This will clear the board completely. Are you sure?');
+    if (!isSure) return;
+
     $cities.forEach(c => {
-      updateCity(c.id, { infections: { yellow: 0, black: 0, blue: 0, red: 0 } });
+      updateCity(c.id, { infections: { yellow: 0, black: 0, blue: 0, red: 0 }, quarantine: false });
     });
+
+    updateOutbreaks(0);
+    updateInfectionRate(0);
+    updateSearches([]);
+    updateObjectives([]);
+    clearAllInfections();
+    expanded = false;
   };
 </script>
 
@@ -63,12 +80,15 @@
         <RegionInfo region="asia" />
         <RegionInfo region="pacific-rim" />
       </div>
+      <div class="viruses">
+        <VirusInfo />
+      </div>
       <div class="characters">
         <CharacterEditor />
       </div>
       <div class="actions">
-        <Container label="Actions">
-          <Button on:click={resetCities}>Reset infections</Button>
+        <Container label="Global Actions">
+          <Button on:click={resetBoard}>Reset board</Button>
         </Container>
       </div>
     </div>

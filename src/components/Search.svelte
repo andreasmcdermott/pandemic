@@ -1,14 +1,14 @@
 <script>
   import game, { updateSearches } from '../stores/game';
-  const end = 11;
+  import Button from './Button.svelte';
 
-  const getPosition = index => {
+  const getPosition = (end, index) => {
     let left = '0px';
     let top = '0px';
-
-    if (index > 5) {
+    const half = end / 2;
+    if (index > half) {
       top = 35;
-      left = 5 + (11 - index) * 30;
+      left = 5 + (end - index) * 30;
     } else {
       top = 5;
       left = 5 + index * 30;
@@ -21,12 +21,19 @@
     const searches = $game.searches;
     const search = searches[searchIndex];
     if (search.current === clickedIndex) {
-      search.current = (search.current + 1) % end;
+      search.current = (search.current + 1) % search.end;
     } else if (search.target === clickedIndex) {
-      search.target = (search.target + 1) % (end + 1);
+      search.target = (search.target + 1) % (search.end + 1);
     } else return;
 
     updateSearches(searches);
+  };
+
+  const addNew = () => {
+    const end = parseInt(prompt('End index?', '10'), 10);
+    if (Number.isNaN(end)) return;
+    const text = prompt('Text', '');
+    updateSearches($game.searches.concat([{ end, current: 0, target: 5, text }]));
   };
 </script>
 
@@ -35,12 +42,13 @@
     position: absolute;
     top: 610px;
     left: 40px;
+    min-width: 240px;
     display: flex;
     flex-direction: column;
   }
 
   .container {
-    width: 180px;
+    width: 240px;
     background: rgba(255, 255, 255, 0.2);
     color: white;
     font-size: 12px;
@@ -93,13 +101,13 @@
   {#each $game.searches as search, s}
     <div class="container">
       <div class="dots">
-        {#each [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] as i}
+        {#each new Array(search.end + 1).fill(null) as _, i}
           <div
             class="dot"
             class:target={i === search.target}
             class:current={i === search.current}
-            class:end={i === end}
-            style={getPosition(i)}
+            class:end={i === search.end}
+            style={getPosition(search.end, i)}
             on:click={() => increaseSearch(s, i)}>
             {i}
           </div>
@@ -108,4 +116,8 @@
       <div class="text">{search.text}</div>
     </div>
   {/each}
+
+  <div class="add">
+    <Button on:click={addNew}>Add Search</Button>
+  </div>
 </div>

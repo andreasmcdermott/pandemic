@@ -1,9 +1,9 @@
 <script>
-  export let edge = "right";
+  export let edge = 'right';
   export let expanded = false;
 
-  const isRight = edge === "right";
-  const isLeft = edge === "left";
+  const isRight = edge === 'right';
+  const isLeft = edge === 'left';
 
   const togglePanel = () => {
     expanded = !expanded;
@@ -23,7 +23,7 @@
     border-top: none;
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
     max-height: calc(100% - 4px);
-    overflow-y: auto;
+    overflow-y: visible;
   }
 
   .expandable.right {

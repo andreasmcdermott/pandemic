@@ -16,6 +16,12 @@
   let selectedCity = '';
   let expandAdmin = false;
 
+  $: {
+    if (!expandAdmin && !!selectedCity) {
+      selectedCity = '';
+    }
+  }
+
   const selectCity = e => {
     selectedCity = e.detail;
     expandAdmin = true;
@@ -32,9 +38,6 @@
     position: relative;
     height: 100%;
     background: #fafafa;
-    /* display: flex; */
-    /* align-items: center; */
-    /* justify-content: center; */
   }
 </style>
 
@@ -47,7 +50,7 @@
       <AccountPanel />
 
       {#if adminMode}
-        <AdminPanel {selectedCity} bind:expanded={expandAdmin} on:selectCity={selectCity} />
+        <AdminPanel {selectedCity} bind:expanded={expandAdmin} />
       {/if}
     {:else}
       <Loading />

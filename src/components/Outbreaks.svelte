@@ -15,19 +15,39 @@
     background: purple;
     opacity: 0.25;
     border: 2px solid white;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .outbreak.active {
     cursor: pointer;
     opacity: 1;
   }
+  .skull {
+    display: block;
+    width: 20px;
+    height: 20px;
+    background: url('/skull.svg') center center;
+    background-size: contain;
+  }
 </style>
 
 <div class="outbreaks">
   {#each OUTBREAKS as o}
-    <div class="outbreak" style="left: {getOutbreakPosX(o)}px; top: {getOutbreakPosY(o)}px;" />
+    <div class="outbreak" style="left: {getOutbreakPosX(o)}px; top: {getOutbreakPosY(o)}px;">
+      {#if o === 8}
+        <span class="skull" />
+      {:else}{o}{/if}
+    </div>
   {/each}
+  
   <div
     class="outbreak active"
     style="left: {getOutbreakPosX($game.outbreaks)}px; top: {getOutbreakPosY($game.outbreaks)}px;"
-    on:click={() => updateOutbreaks(($game.outbreaks + 1) % OUTBREAKS.length)} />
+    on:click={() => updateOutbreaks(($game.outbreaks + 1) % OUTBREAKS.length)}>
+    {#if $game.outbreaks === 8}
+      <span class="skull" />
+    {:else}{$game.outbreaks}{/if}
+  </div>
 </div>

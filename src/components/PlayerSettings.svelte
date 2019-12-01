@@ -5,6 +5,7 @@
   import CharacterSelector from './CharacterSelector.svelte';
   import CharacterInfo from './CharacterInfo.svelte';
   import CitySelector from './CitySelector.svelte';
+  import Cards from './Cards.svelte';
 </script>
 
 {#if $player}
@@ -20,6 +21,6 @@
   </Container>
 
   <Container label="Cards">
-    <div>Todo</div>
+    <Cards player={$player} />
   </Container>
 {/if}
