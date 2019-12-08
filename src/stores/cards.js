@@ -42,3 +42,12 @@ const cards = derived(
 );
 
 export default cards;
+
+export function updateCard(card) {
+  const $game = get(gameData);
+  if (!$game) return;
+  $game.ref
+    .collection('cards')
+    .doc(card.id)
+    .update(card);
+}

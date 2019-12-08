@@ -17,6 +17,9 @@
     padding: 5px;
     font-size: 12px;
     width: 250px;
+    max-height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
 </style>
 

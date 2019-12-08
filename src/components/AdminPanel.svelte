@@ -11,9 +11,11 @@
   import Container from './Container.svelte';
   import Button from './Button.svelte';
   import CharacterEditor from './CharacterEditor.svelte';
+  import CardEditor from './CardEditor.svelte';
   import ExpandablePanel from './ExpandablePanel.svelte';
   import CityInfo from './CityInfo.svelte';
   import VirusInfo from './VirusInfo.svelte';
+  import GameInfo from './GameInfo.svelte';
   import RegionInfo from './RegionInfo.svelte';
 
   export let selectedCity;
@@ -80,11 +82,19 @@
         <RegionInfo region="asia" />
         <RegionInfo region="pacific-rim" />
       </div>
-      <div class="viruses">
-        <VirusInfo />
+      <div>
+        <div class="viruses">
+          <VirusInfo />
+        </div>
+        <div class="game-info">
+          <GameInfo />
+        </div>
       </div>
       <div class="characters">
         <CharacterEditor />
+      </div>
+      <div class="cards">
+        <CardEditor />
       </div>
       <div class="actions">
         <Container label="Global Actions">

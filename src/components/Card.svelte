@@ -76,8 +76,8 @@
     background: blue;
   }
 
-  .color.faded {
-    background: lime;
+  .color.yellow {
+    background: yellow;
   }
 
   .eventInfo {
@@ -91,7 +91,7 @@
 
 {#if card}
   <div class="card" class:canEdit>
-    <div class="color {card.color || ''}" class:faded={card.faded}>
+    <div class="color {card.color || ''}">
       <span class="x">x</span>
     </div>
     <span class="name" on:click={remove}>

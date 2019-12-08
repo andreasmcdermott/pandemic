@@ -2,6 +2,7 @@
   import users from '../stores/users';
   import players from '../stores/players';
   import player from '../stores/player';
+  import characters from '../stores/characters';
   import { capitalize } from '../utils/strings';
 
   import Cards from './Cards.svelte';
@@ -16,14 +17,12 @@
     acc[user.id] = user.name;
     return acc;
   }, {});
-</script>
 
-<style>
-  .character {
-    display: block;
-    padding-bottom: 10px;
-  }
-</style>
+  const getMaxCards = player => {
+    const character = $characters.find(c => c.id === player.character);
+    return character.max_cards || 7;
+  };
+</script>
 
 {#each otherPlayers as player}
   <Accordion>
@@ -31,13 +30,15 @@
       <UserDisplay color={player.color} name={nameById[player.id]} />
     </div>
     <Container label="Character">
-      <span class="character">{capitalize(player.character) || 'N/A'}</span>
+
       {#if player.character}
         <CharacterInfo character={player.character} />
+      {:else}
+        <span>N/A</span>
       {/if}
     </Container>
     <Container label="City">{capitalize(player.city) || 'N/A'}</Container>
-    <Container label="Cards">
+    <Container label={`Cards${` (${player.cards.length} / ${getMaxCards(player)})`}`}>
       <Cards canEdit={false} {player} />
     </Container>
   </Accordion>

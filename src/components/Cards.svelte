@@ -12,11 +12,11 @@
   const sortCards = (c1, c2) => {
     if (c1.id.startsWith('event')) return -1;
     if (c2.id.startsWith('event')) return 1;
-    if (c1.faded) return -1;
-    if (c2.faded) return 1;
+    if (c1.color === 'yellow') return -1;
+    if (c2.color === 'yellow') return 1;
     if (c1.color === 'red') return -1;
     if (c2.color === 'red') return 1;
-    if (c1.clor === 'blue') return -1;
+    if (c1.color === 'blue') return -1;
     if (c2.color === 'blue') return 1;
     if (c1.color === 'black') return -1;
     if (c2.color === 'black') return 1;
@@ -30,7 +30,7 @@
   };
 
   const add = () => {
-    if (canEdit) {
+    if (canEdit && selectedNewCard.length > 0) {
       updateCards(player.cards.concat([selectedNewCard]));
       selectedNewCard = '';
     }

@@ -136,7 +136,7 @@
     class:faded={city.faded}
     class:selected
     class:quarantine={city.quarantine}
-    style={`left: ${city.x}px; top: ${city.y}px; width: ${$game.city_size}px; height: ${$game.city_size}px; background: ${city.faded ? 'lime' : city.color};`}
+    style={`left: ${city.x}px; top: ${city.y}px; width: ${$game.city_size}px; height: ${$game.city_size}px; background: ${city.faded ? 'lime' : city.color}; border-color: ${city.faded ? city.color : 'white'};`}
     on:click={() => dispatch(selected ? 'unselectCity' : 'selectCity', city.id)}>
     <div class="name">{city.name}</div>
     <div class="city-quarantine" />
