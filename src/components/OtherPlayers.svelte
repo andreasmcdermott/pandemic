@@ -41,5 +41,6 @@
     <Container label={`Cards${` (${player.cards.length} / ${getMaxCards(player)})`}`}>
       <Cards canEdit={false} {player} />
     </Container>
+    <Container label="Doses">{player.doses || 0}</Container>
   </Accordion>
 {/each}

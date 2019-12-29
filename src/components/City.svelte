@@ -71,6 +71,20 @@
     border: 2px solid black;
     background: white;
   }
+  .vaccineFactory {
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 22px;
+    border: 2px solid black;
+    background: orangered;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
   .city-infections {
     position: absolute;
     left: -18px;
@@ -110,10 +124,10 @@
   .city.faded .player {
     border-color: black !important;
   }
-  .city-quarantine {
+  .city-quarantine,
+  .city-vaccinated {
     display: none;
     background-color: white;
-    background-image: url('/biohazard.png');
     background-size: contain;
     background-position: center center;
     background-repeat: no-repeat;
@@ -124,8 +138,24 @@
     top: 4px;
     left: 4px;
   }
+  .city-quarantine {
+    background-image: url('/biohazard.png');
+  }
+  .city-vaccinated {
+    background-image: url('/syringe.png');
+  }
+  .city.vaccinated > .city-vaccinated,
   .city.quarantine > .city-quarantine {
     display: block;
+  }
+  .city.vaccinated.quarantine > .city-quarantine,
+  .city.vaccinated.quarantine > .city-vaccinated {
+    width: 8px;
+    height: 8px;
+  }
+  .city.vaccinated.quarantine > .city-vaccinated {
+    top: 12px;
+    left: 12px;
   }
 </style>
 
@@ -136,10 +166,12 @@
     class:faded={city.faded}
     class:selected
     class:quarantine={city.quarantine}
+    class:vaccinated={city.vaccinated}
     style={`left: ${city.x}px; top: ${city.y}px; width: ${$game.city_size}px; height: ${$game.city_size}px; background: ${city.faded ? 'lime' : city.color}; border-color: ${city.faded ? city.color : 'white'};`}
     on:click={() => dispatch(selected ? 'unselectCity' : 'selectCity', city.id)}>
     <div class="name">{city.name}</div>
     <div class="city-quarantine" />
+    <div class="city-vaccinated" />
     <div class="city-infections">
       {#each Object.entries(city.infections).filter(([, count]) => selected || count > 0) as [infection, count]}
         <span
@@ -156,6 +188,15 @@
     {/if}
     {#if city.researchStation}
       <div class="researchStation" />
+    {/if}
+    {#if city.vaccineFactory}
+      <div
+        class="vaccineFactory"
+        on:click|preventDefault|stopPropagation={() => {
+          updateCity(city.id, { vaccineDoses: (city.vaccineDoses || 0) + 1 });
+        }}>
+        {city.vaccineDoses}
+      </div>
     {/if}
     {#each Object.values($players).filter(player => player.city === city.id) as player, i}
       <div class="player" style="background: {player.color}; left: {1 + i * 4}px" />

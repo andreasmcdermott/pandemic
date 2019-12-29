@@ -48,6 +48,16 @@
     </span>
   </div>
   <div class="row">
+    <strong>Vaccinated:</strong>
+    <span
+      class="action"
+      on:click={() => {
+        updateCity(city.id, { vaccinated: !city.vaccinated });
+      }}>
+      {!!city.vaccinated}
+    </span>
+  </div>
+  <div class="row">
     <strong>Research Station:</strong>
     <span
       class="action"
@@ -57,6 +67,41 @@
       {city.researchStation}
     </span>
   </div>
+  <div class="row">
+    <strong>Vaccine Factory:</strong>
+    <span
+      class="action"
+      on:click={() => {
+        updateCity(city.id, {
+          vaccineFactory: !city.vaccineFactory,
+          vaccineDoses: city.vaccineFactory || 0
+        });
+      }}>
+      {!!city.vaccineFactory}
+    </span>
+  </div>
+  {#if city.vaccineFactory}
+    <div class="row">
+      <strong>Vaccine Doses:</strong>
+      <span>{city.vaccineDoses || 0}</span>
+    </div>
+    <div class="row">
+      <Button
+        size="small"
+        on:click={() => {
+          updateCity(city.id, { vaccineDoses: Math.max((city.vaccineDoses || 0) - 1, 0) });
+        }}>
+        -
+      </Button>
+      <Button
+        size="small"
+        on:click={() => {
+          updateCity(city.id, { vaccineDoses: (city.vaccineDoses || 0) + 1 });
+        }}>
+        +
+      </Button>
+    </div>
+  {/if}
   <div class="row">
     <strong>Military Base:</strong>
     <span

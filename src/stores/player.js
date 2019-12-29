@@ -33,3 +33,9 @@ export async function updateCards(cards) {
   if (!$player) return;
   $player.ref.update({ cards: [...cards] });
 }
+
+export async function updatePlayerDoses(doses) {
+  const $player = get(playerData);
+  if (!$player) return;
+  $player.ref.update({ doses: Math.max(doses, 0) });
+}
