@@ -6,6 +6,7 @@
 </script>
 
 <select
+  bind:value={selected}
   on:change={e => {
     dispatch('change', e.target.value);
   }}>

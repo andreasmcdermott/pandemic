@@ -68,7 +68,8 @@
     background: black;
   }
 
-  .color.black .x {
+  .color.black .x,
+  .color.blue .x {
     color: white;
   }
 
