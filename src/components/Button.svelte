@@ -1,6 +1,9 @@
 <script>
   export let type = 'button';
   export let size = 'normal';
+
+  let n = null;
+  export const node = () => n;
 </script>
 
 <style>
@@ -25,6 +28,6 @@
   }
 </style>
 
-<button class="button" on:click {type} class:small={size === 'small'}>
+<button bind:this={n} class="button" on:click {type} class:small={size === 'small'}>
   <slot />
 </button>

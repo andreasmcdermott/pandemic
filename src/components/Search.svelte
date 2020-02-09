@@ -5,10 +5,12 @@
   const getPosition = (end, index) => {
     let left = '0px';
     let top = '0px';
-    const half = end / 2;
-    if (index > half) {
+    if (index >= 6 && index < 12) {
       top = 35;
-      left = 5 + (end - index) * 30;
+      left = 5 + (5 - (index % 6)) * 30;
+    } else if (index >= 12) {
+      top = 65;
+      left = 5 + (index % 6) * 30;
     } else {
       top = 5;
       left = 5 + index * 30;
@@ -32,9 +34,31 @@
   const addNew = () => {
     const end = parseInt(prompt('End index?', '10'), 10);
     if (Number.isNaN(end)) return;
+    const target = parseInt(prompt('Target index?', '5'), 10);
     const text = prompt('Text', '');
-    updateSearches($game.searches.concat([{ end, current: 0, target: 5, text }]));
+    updateSearches($game.searches.concat([{ end, current: 0, target, text }]));
   };
+
+  const cards = [
+    { count: 0, type: '' },
+    { count: 1, type: 'red' },
+    { count: 1, type: 'red' },
+    { count: 1, type: 'black' },
+    { count: 1, type: 'black' },
+    { count: 1, type: 'yellow' },
+    { count: 1, type: 'yellow' },
+    { count: 1, type: 'blue' },
+    { count: 1, type: 'blue' },
+    { count: 2, type: 'red' },
+    { count: 2, type: 'black' },
+    { count: 2, type: 'yellow' },
+    { count: 2, type: 'blue' },
+    { count: 2, type: 'red' },
+    { count: 2, type: 'black' },
+    { count: 2, type: 'yellow' },
+    { count: 2, type: 'blue' },
+    { count: 0, type: '' }
+  ];
 </script>
 
 <style>
@@ -58,8 +82,15 @@
 
   .dots {
     width: 100%;
-    height: 60px;
     position: relative;
+  }
+
+  .dots.two {
+    height: 60px;
+  }
+
+  .dots.three {
+    height: 90px;
   }
 
   .dot {
@@ -69,8 +100,10 @@
     border: 1px solid white;
     border-radius: 50%;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    font-size: 6px;
   }
 
   .dot.end {
@@ -90,6 +123,35 @@
     border-color: blue;
   }
 
+  .dot.oneCard::before,
+  .dot.twoCards::before,
+  .dot.twoCards::after {
+    content: ' ';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+  }
+
+  .dot.color-red::before,
+  .dot.color-red::after {
+    background: red;
+  }
+
+  .dot.color-black::before,
+  .dot.color-black::after {
+    background: black;
+  }
+
+  .dot.color-blue::before,
+  .dot.color-blue::after {
+    background: blue;
+  }
+
+  .dot.color-yellow::before,
+  .dot.color-yellow::after {
+    background: yellow;
+  }
+
   .text {
     padding: 5px;
     line-height: 10px;
@@ -100,13 +162,15 @@
 <div class="outer_container">
   {#each $game.searches as search, s}
     <div class="container">
-      <div class="dots">
+      <div class="dots" class:two={search.end <= 12} class:three={search.end > 12}>
         {#each new Array(search.end + 1).fill(null) as _, i}
           <div
-            class="dot"
+            class="dot color-{cards[i].type}"
             class:target={i === search.target}
             class:current={i === search.current}
             class:end={i === search.end}
+            class:oneCard={cards[i].count === 1}
+            class:twoCards={cards[i].count === 2}
             style={getPosition(search.end, i)}
             on:click={() => increaseSearch(s, i)}>
             {i}

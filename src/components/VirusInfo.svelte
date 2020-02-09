@@ -1,16 +1,21 @@
 <script>
   import game from '../stores/game';
   import cities from '../stores/cities';
+  import players from '../stores/players';
   import Container from './Container.svelte';
 
   $: yellow = $cities.reduce((acc, city) => acc + city.infections.yellow, 0);
   $: red = $cities.reduce((acc, city) => acc + city.infections.red, 0);
   $: blue = $cities.reduce((acc, city) => acc + city.infections.blue, 0);
   $: black = $cities.reduce((acc, city) => acc + city.infections.black, 0);
+  $: vaccines =
+    $cities.reduce((acc, city) => acc + (city.vaccineDoses || 0), 0) +
+    $players.reduce((acc, player) => acc + (player.doses || 0), 0);
 
   const warnLimit = 5;
   const maxCubes = 24;
   const maxFaded = 38;
+  const maxVaccines = 24;
 </script>
 
 <style>
@@ -44,5 +49,10 @@
   <div class="row" class:warn={maxCubes - black <= warnLimit}>
     <strong>Black</strong>
     <span>{black} / {maxCubes}</span>
+  </div>
+  <hr />
+  <div class="row" class:warn={maxVaccines - vaccines <= warnLimit}>
+    <strong>Vaccines:</strong>
+    <span>{vaccines} / {maxVaccines}</span>
   </div>
 </Container>

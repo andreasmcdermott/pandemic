@@ -4,7 +4,8 @@
     updateOutbreaks,
     updateSearches,
     clearAllInfections,
-    updateObjectives
+    updateObjectives,
+    setRoadblocks
   } from '../stores/game';
   import cities, { updateCity } from '../stores/cities';
 
@@ -29,7 +30,11 @@
     if (!isSure) return;
 
     $cities.forEach(c => {
-      updateCity(c.id, { infections: { yellow: 0, black: 0, blue: 0, red: 0 }, quarantine: false });
+      updateCity(c.id, {
+        infections: { yellow: 0, black: 0, blue: 0, red: 0 },
+        quarantine: false,
+        vaccineDoses: 0
+      });
     });
 
     updateOutbreaks(0);
@@ -37,6 +42,7 @@
     updateSearches([]);
     updateObjectives([]);
     clearAllInfections();
+    setRoadlocks([]);
     expanded = false;
   };
 </script>
@@ -86,7 +92,7 @@
         <div class="viruses">
           <VirusInfo />
         </div>
-        <div class="game-info">
+        <div>
           <GameInfo />
         </div>
       </div>

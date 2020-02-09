@@ -77,3 +77,9 @@ export function updateSearches(searches) {
   if (!$game) return;
   $game.ref.update({ searches });
 }
+
+export function setRoadblocks(roadblocks) {
+  const $game = get(gameData);
+  if (!$game) return;
+  $game.ref.update({ roadblocks });
+}

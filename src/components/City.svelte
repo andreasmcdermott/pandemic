@@ -31,6 +31,9 @@
     border-color: skyblue;
     z-index: 10;
   }
+  .city:hover {
+    z-index: 10;
+  }
   .panic,
   .name {
     display: block;
@@ -89,6 +92,10 @@
     position: absolute;
     left: -18px;
     top: -20px;
+    height: 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   .city-infections > * {
     border: 1px solid white;

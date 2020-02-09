@@ -6,6 +6,7 @@
   import InfectionRate from './InfectionRate.svelte';
   import Objectives from './Objectives.svelte';
   import Search from './Search.svelte';
+  import Roadblocks from './Roadblocks.svelte';
 
   export let selectedCity;
 </script>
@@ -32,5 +33,6 @@
   <InfectionRate />
   <Infections />
   <Search />
+  <Roadblocks />
   <Objectives />
 </div>
