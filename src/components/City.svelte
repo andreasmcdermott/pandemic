@@ -86,7 +86,32 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  .vaccineFactory .minus,
+  .vaccineFactory .plus {
+    display: none;
+    position: absolute;
+    background: orangered;
+    color: black;
+    border: 1px solid black;
     cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    width: 10px;
+    height: 10px;
+    font-size: 10px;
+  }
+  .vaccineFactory .minus {
+    left: -3px;
+    transform: translateX(-100%);
+  }
+  .vaccineFactory .plus {
+    left: 100%;
+    transform: translateX(3px);
+  }
+  .vaccineFactory:hover .minus,
+  .vaccineFactory:hover .plus {
+    display: flex;
   }
   .city-infections {
     position: absolute;
@@ -197,12 +222,22 @@
       <div class="researchStation" />
     {/if}
     {#if city.vaccineFactory}
-      <div
-        class="vaccineFactory"
-        on:click|preventDefault|stopPropagation={() => {
-          updateCity(city.id, { vaccineDoses: (city.vaccineDoses || 0) + 1 });
-        }}>
+      <div class="vaccineFactory">
         {city.vaccineDoses}
+        <div
+          class="minus"
+          on:click|preventDefault|stopPropagation={() => {
+            updateCity(city.id, { vaccineDoses: Math.max((city.vaccineDoses || 0) - 1, 0) });
+          }}>
+          -
+        </div>
+        <div
+          class="plus"
+          on:click|preventDefault|stopPropagation={() => {
+            updateCity(city.id, { vaccineDoses: (city.vaccineDoses || 0) + 1 });
+          }}>
+          +
+        </div>
       </div>
     {/if}
     {#each Object.values($players).filter(player => player.city === city.id) as player, i}
