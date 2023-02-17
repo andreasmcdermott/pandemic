@@ -8,6 +8,7 @@ The code in this repository was updated to match the latest ruleset as the game 
 
 Uses Firebase as a data store.
 
-![](https://www.dropbox.com/s/63u74fqxt59mewf/pandemic-1.png?dl=0)
+![Screen Shot 2023-02-17 at 3 48 12 PM](https://user-images.githubusercontent.com/4381241/219818248-8625711c-5034-44d8-8004-8c1bc1951d58.png)
 
-![](https://www.dropbox.com/s/conjix5dtka0303/pandemic-2.png?dl=0)
+![Screen Shot 2023-02-17 at 3 48 32 PM](https://user-images.githubusercontent.com/4381241/219818265-0c011443-ae4a-4bbf-9e25-1c68dca15781.png)
+
